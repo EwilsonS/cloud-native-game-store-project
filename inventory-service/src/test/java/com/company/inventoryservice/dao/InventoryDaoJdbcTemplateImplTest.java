@@ -60,7 +60,6 @@ public class InventoryDaoJdbcTemplateImplTest {
     public void deleteInventoryWithNonExistentId() {
 
         inventoryDao.deleteInventory(500);
-
     }
 
     // tests updateInventory()
