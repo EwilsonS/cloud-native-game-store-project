@@ -2,81 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa50bb14-9cde-4aa9-a88d-0b8ab0d74f7d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Design/RetailApiService.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/InvoiceServiceApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/controller/AllExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/controller/InvoiceController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/dao/InvoiceDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/dao/InvoiceDaoJdbcTemplateImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/dao/InvoiceItemDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/dao/InvoiceItemDaoJdbcTemplateImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/exception/NotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/model/Invoice.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/model/InvoiceItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/model/InvoiceViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/service/InvoiceService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/main/resources/invoiceSchema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/test/java/com/evanco/invoiceservice/InvoiceServiceApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/test/java/com/evanco/invoiceservice/dao/InvoiceDaoJdbcTemplateImplTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/test/java/com/evanco/invoiceservice/dao/InvoiceItemDaoJdbcTemplateImplTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/test/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/invoice-service/src/test/resources/invoiceSchema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/src/main/java/com/evanco/levelupcircuitbreaker/LevelUpCircuitBreakerApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-circuit-breaker/src/test/java/com/evanco/levelupcircuitbreaker/LevelUpCircuitBreakerApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/src/main/java/com/evanco/levelupqueueconsumer/LevelUpQueueConsumerApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-queue-consumer/src/test/java/com/evanco/levelupqueueconsumer/LevelUpQueueConsumerApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/src/main/java/com/evanco/levelupservice/LevelUpServiceApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/src/main/resources/levelUpSchema.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/level-up-service/src/test/java/com/evanco/levelupservice/LevelUpServiceApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/src/main/java/com/evanco/retailapiservice/RetailApiServiceApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/src/main/resources/application.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retail-api-service/src/test/java/com/evanco/retailapiservice/RetailApiServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inventory-service/src/test/java/com/company/inventoryservice/dao/InventoryDaoJdbcTemplateImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/inventory-service/src/test/java/com/company/inventoryservice/dao/InventoryDaoJdbcTemplateImplTest.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,22 +12,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="75">
-              <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+              <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/cloud-native-game-store-project.iml">
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
@@ -117,11 +48,11 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
-    <option name="x" value="211" />
-    <option name="y" value="119" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="98" />
+    <option name="y" value="336" />
     <option name="width" value="1253" />
-    <option name="height" value="713" />
+    <option name="height" value="498" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -144,8 +75,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -177,10 +108,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="187" y="120" width="1253" height="713" extended-state="0" />
+    <frame x="187" y="631" width="1253" height="713" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26589596" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.27002478" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -209,18 +140,21 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/cloud-native-game-store-project.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/modules.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
