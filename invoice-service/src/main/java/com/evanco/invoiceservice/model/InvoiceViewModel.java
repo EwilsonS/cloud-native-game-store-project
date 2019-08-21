@@ -27,4 +27,11 @@ public class InvoiceViewModel extends Invoice {
     public int hashCode() {
         return Objects.hash(super.hashCode(), getInvoiceItems());
     }
+
+    @Override
+    public String toString() {
+        return "InvoiceViewModel{" +
+                "invoiceItems=" + invoiceItems +
+                '}';
+    }
 }

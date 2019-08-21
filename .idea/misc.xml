@@ -10,6 +10,8 @@
         <option value="$PROJECT_DIR$/retail-api-service/pom.xml" />
         <option value="$PROJECT_DIR$/level-up-queue-consumer/pom.xml" />
         <option value="$PROJECT_DIR$/level-up-circuit-breaker/pom.xml" />
+        <option value="$PROJECT_DIR$/customer-service/pom.xml" />
+        <option value="$PROJECT_DIR$/inventory-service/pom.xml" />
       </list>
     </option>
   </component>
