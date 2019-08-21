@@ -3,6 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/cloud-native-game-store-project.iml" filepath="$PROJECT_DIR$/.idea/cloud-native-game-store-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka-service-registry/eureka-service-registry.iml" filepath="$PROJECT_DIR$/eureka-service-registry/eureka-service-registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/invoice-service/invoice-service.iml" filepath="$PROJECT_DIR$/invoice-service/invoice-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/level-up-circuit-breaker/level-up-circuit-breaker.iml" filepath="$PROJECT_DIR$/level-up-circuit-breaker/level-up-circuit-breaker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/level-up-queue-consumer/level-up-queue-consumer.iml" filepath="$PROJECT_DIR$/level-up-queue-consumer/level-up-queue-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/level-up-service/level-up-service.iml" filepath="$PROJECT_DIR$/level-up-service/level-up-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/retail-api-service/retail-api-service.iml" filepath="$PROJECT_DIR$/retail-api-service/retail-api-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-cloud-config-server/spring-cloud-config-server.iml" filepath="$PROJECT_DIR$/spring-cloud-config-server/spring-cloud-config-server.iml" />
     </modules>
   </component>
 </project>

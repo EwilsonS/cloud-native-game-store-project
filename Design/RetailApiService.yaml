@@ -1,0 +1,191 @@
+openapi: 3.0.0
+info:
+  title: Cloud native game store - retail api
+  description: tbd
+  version: 0.1.0
+servers:
+  - url: 'http//localhost:8181'
+    description: Local dev server
+paths:
+  /invoices:
+    post:
+      summary: Creates new Invoice object
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '201':
+          description: An Invoice is returned with the customer's level up info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceViewModel'
+        '400':
+          description: Invalid request syntax
+    get:
+      summary: Returns all invoices with customers' level up points
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceViewModel'
+  /invoices/{id}:
+    get:
+      summary: Retrieves the invoice with the given id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the desired invoice
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Invoice object with the given id and associated level up points
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceViewModel'
+  /invoices/customer/{id}:
+    get:
+      summary: Get list of invoices by customer id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Invoice object with level up info
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: List of customer's invoices
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceViewModel'
+  /products/inventory:
+    get:
+      summary: Returns all products in inventory
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceViewModel'
+  /products/{id}:
+    get:
+      summary: Retrieves the product with the given id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the desired product
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Returns a single product with a given id
+          content:
+            application/json:
+             schema:
+              $ref: '#/components/schemas/Product'
+  /products/invoice/{id}:
+    get:
+      summary: Retrieves list of products with the given invoice id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of the desired invoice
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: List of Product objects with the given invoice id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  /levelup/customer/{id}:
+    get:
+      summary: Retrieves Level Up Object with the given customer id
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: Customer id of the desired Level Up object
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      responses:
+        '200':
+          description: level up points available for customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceViewModel'
+
+# ===== Models =========================
+components:
+  schemas:
+    Invoice:
+      properties:
+        invoice_id:
+          type: integer
+        customer_id:
+          type: integer
+        purchase_date:
+          type: string
+      required:
+        - invoice_id
+        - customer_id
+        - purchase_date
+    InvoiceViewModel:
+      properties:
+        invoice_id:
+          type: integer
+        customer_id:
+          type: integer
+        purchase_date:
+          type: string
+        level_up_points:
+          type: integer
+      required:
+        - invoice_id
+        - customer_id
+        - purchase_date
+        - level_up_points
+    Product:
+      properties:
+        product_id:
+          type: integer
+        product_name:
+          type: string
+        product_description:
+          type: string
+        list_price:
+          type: integer
+        unit_cost:
+          type: integer
+      required:
+        - product_id
+        - product_name
+        - product_description
+        - list_price
+        - unit_cost
+
