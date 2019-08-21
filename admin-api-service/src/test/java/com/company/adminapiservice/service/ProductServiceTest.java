@@ -1,11 +1,13 @@
-package com.company.productservice.service;
+package com.company.adminapiservice.service;
 
-import com.company.productservice.dao.ProductDao;
-import com.company.productservice.dao.ProductDaoJdbcTemplateImpl;
-import com.company.productservice.model.Product;
+import com.company.adminapiservice.util.feign.ProductClient;
+import com.company.adminapiservice.util.messages.Product;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,23 +16,26 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class ProductServiceTest {
 
-    ProductService productService;
-    ProductDao productDao;
+    @InjectMocks
+    private ProductService productService;
+
+    @Mock
+    private ProductClient productClient;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+
+        MockitoAnnotations.initMocks(this);
 
         // configure mock objects
-        setUpProductMock();
+        setUpProductClientMock();
 
         // Passes mock objects
-        productService = new ProductService(productDao);
+        productService = new ProductService(productClient);
 
     }
 
@@ -43,7 +48,7 @@ public class ProductServiceTest {
         product.setListPrice(new BigDecimal(49.99).setScale(2, RoundingMode.HALF_UP));
         product.setUnitCost(new BigDecimal(20.00).setScale(2, RoundingMode.HALF_UP));
 
-        product = productService.addProduct(product);
+        product= productService.addProduct(product);
 
         Product product1 = productService.getProduct(product.getProductId());
 
@@ -99,7 +104,7 @@ public class ProductServiceTest {
         Product product = productService.getProduct(1);
         productService.deleteProduct(1);
         ArgumentCaptor<Integer> postCaptor = ArgumentCaptor.forClass(Integer.class);
-        verify(productDao).deleteProduct(postCaptor.capture());
+        verify(productClient).deleteProduct(postCaptor.capture());
         assertEquals(product.getProductId(), postCaptor.getValue().intValue());
     }
 
@@ -115,9 +120,9 @@ public class ProductServiceTest {
         product.setUnitCost(new BigDecimal(30.00).setScale(2, RoundingMode.HALF_UP));
 
 
-        productService.updateProduct(product);
+        productService.updateProduct(product.getProductId(), product);
         ArgumentCaptor<Product> postCaptor = ArgumentCaptor.forClass(Product.class);
-        verify(productDao).updateProduct(postCaptor.capture());
+        verify(productClient).updateProduct(any(Integer.class), postCaptor.capture());
         assertEquals(product.getUnitCost(), postCaptor.getValue().getUnitCost());
 
     }
@@ -129,11 +134,20 @@ public class ProductServiceTest {
         assertNull(product);
     }
 
-    // Create mocks
+    // tests default constructor for test coverage
+    // so developers know something went wrong if less than 100%
+    @Test
+    public void createADefaultProduct() {
 
-    public void setUpProductMock() {
+        Object productObj = new ProductService();
 
-        productDao = mock(ProductDaoJdbcTemplateImpl.class);
+        assertEquals(true , productObj instanceof ProductService);
+
+    }
+
+    // create mocks
+
+    public void setUpProductClientMock() {
 
         Product product = new Product();
         product.setProductName("Mario Kart 8 Deluxe");
@@ -161,17 +175,18 @@ public class ProductServiceTest {
         product4.setListPrice(new BigDecimal(59.99).setScale(2, RoundingMode.HALF_UP));
         product4.setUnitCost(new BigDecimal(39.00).setScale(2, RoundingMode.HALF_UP));
 
-        doReturn(product2).when(productDao).addProduct(product);
-        doReturn(product4).when(productDao).addProduct(product3);
-        doReturn(product2).when(productDao).getProduct(1);
-        doReturn(product4).when(productDao).getProduct(2);
+        doReturn(product2).when(productClient).addProduct(product);
+        doReturn(product4).when(productClient).addProduct(product3);
+        doReturn(product2).when(productClient).getProduct(1);
+        doReturn(product4).when(productClient).getProduct(2);
 
         List<Product> productList = new ArrayList<>();
         productList.add(product2);
         productList.add(product4);
 
-        doReturn(productList).when(productDao).getAllProducts();
+        doReturn(productList).when(productClient).getAllProducts();
 
     }
 
 }
+
