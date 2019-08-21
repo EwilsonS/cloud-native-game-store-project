@@ -1,11 +1,15 @@
 package com.evanco.invoiceservice.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Invoice {
     private int invoiceId;
+    @Positive
     private int customerId;
+
     private LocalDate purchaseDate;
 
     public int getInvoiceId() {
@@ -45,5 +49,14 @@ public class Invoice {
     @Override
     public int hashCode() {
         return Objects.hash(getInvoiceId(), getCustomerId(), getPurchaseDate());
+    }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", customerId=" + customerId +
+                ", purchaseDate=" + purchaseDate +
+                '}';
     }
 }
