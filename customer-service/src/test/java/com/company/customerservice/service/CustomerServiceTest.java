@@ -71,7 +71,7 @@ public class CustomerServiceTest {
         assertEquals(customer, customer1);
     }
 
-    // tests findAllCustomers()
+    // tests getAllCustomers()
     @Test
     public void findAllCustomers() {
 
