@@ -38,7 +38,7 @@ public class InvoiceService {
             InvoiceItem invoiceItem = new InvoiceItem();
             invoiceItem.setQuantity(ii.getQuantity());
             invoiceItem.setInvoiceId(invoice.getInvoiceId());
-            invoiceItem.setUnitPrice(invoiceItem.getUnitPrice());
+            invoiceItem.setUnitPrice(ii.getUnitPrice());
             invoiceItem.setInventoryId(ii.getInventoryId());
             invoiceItemDao.addInvoiceItem(invoiceItem);
         }
@@ -63,7 +63,6 @@ public class InvoiceService {
     public void deleteInvoice(int id) {
         // handle fk constraints
         invoiceItemDao.getInvoiceItemsByInvoiceId(id)
-                .stream()
                 .forEach(ii -> invoiceItemDao.deleteInvoiceItem(ii.getInvoiceItemId()));
         invoiceDao.deleteInvoice(id);
     }
