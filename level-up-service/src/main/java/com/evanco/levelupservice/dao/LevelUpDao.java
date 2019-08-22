@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface LevelUpDao {
 
+    // standard CRUD
+
     LevelUp addLevelUp(LevelUp levelUp);
 
     LevelUp getLevelUp(int id);
@@ -16,5 +18,5 @@ public interface LevelUpDao {
 
     List<LevelUp> getAllLevelUps();
 
-    Integer getLevelUpPointsByCustomerId(int id);
+    Integer getLevelUpPointsByCustomerId(int customerId);
 }

@@ -89,9 +89,4 @@ public class LevelUpDaoJdcbTemplateImplTest {
         int points = levelUpDao.getLevelUpPointsByCustomerId(levelUp2.getCustomerId());
         assertEquals(120, points);
     }
-
-//    @Test
-//    public void getLevelUpWithNullId(){
-//        assertNull(levelUpDao.getLevelUp(989898));
-//    }
 }

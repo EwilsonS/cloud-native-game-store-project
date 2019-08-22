@@ -1,9 +1,11 @@
 package com.evanco.levelupservice.dao;
 
+import com.evanco.levelupservice.exception.AmbiguousResultException;
 import com.evanco.levelupservice.exception.NotFoundException;
 import com.evanco.levelupservice.model.LevelUp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +17,9 @@ import java.util.List;
 
 @Repository
 public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
+
     // init jdbc
-    JdbcTemplate jdbc;
+    private JdbcTemplate jdbc;
 
     // prepared statements
     private static final String INSERT_LEVEL_UP =
@@ -26,7 +29,8 @@ public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
     private static final String SELECT_ALL_LEVEL_UPS =
             "select * from level_up";
     private static final String SELECT_POINTS_BY_CUSTOMER_ID =
-            "select points from level_up where customer_id=?";
+            // return *, not just points, to match mapper
+            "select * from level_up where customer_id=?";
     private static final String UPDATE_LEVEL_UP =
             "update level_up set customer_id=?, points=?, member_date=? where level_up_id=?";
     private static final String DELETE_LEVEL_UP =
@@ -64,7 +68,10 @@ public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
     }
 
     @Override
+    @Transactional
     public void updateLevelUp(LevelUp levelUp) {
+        // checks for id first so user knows if anything was updated
+        // user could have unknowingly entered the wrong id
         if (getLevelUp(levelUp.getLevelUpId()) == null) {
             throw new IllegalArgumentException("Level up id not found");
         }
@@ -78,7 +85,10 @@ public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
     }
 
     @Override
+    @Transactional
     public void deleteLevelUp(int id) {
+        // checks for id first so user knows if anything was deleted
+        // user could have unknowingly entered the wrong id
         if (getLevelUp(id) == null) {
             throw new NotFoundException("Level up id not found");
         }
@@ -96,12 +106,19 @@ public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
     }
 
     @Override
-    public Integer getLevelUpPointsByCustomerId(int id) {
+    public Integer getLevelUpPointsByCustomerId(int customerId) {
         try {
-            LevelUp levelUp = jdbc.queryForObject(SELECT_POINTS_BY_CUSTOMER_ID, this::mapRowToLevelUp, id);
+            LevelUp levelUp = jdbc.queryForObject(SELECT_POINTS_BY_CUSTOMER_ID, this::mapRowToLevelUp, customerId);
+            System.out.println("Level up in dao: " + levelUp);
             return levelUp.getPoints();
-        } catch (NullPointerException e) {
+        }
+        // database will throw this exception if the customer id does not exist
+        catch (EmptyResultDataAccessException e) {
             return null;
+        }
+        // database will throw this exception if there are multiple rows with the customer id
+        catch (IncorrectResultSizeDataAccessException i) {
+            throw new AmbiguousResultException("Points could not be determined due to multiple level ups with the provided customer id.");
         }
     }
 

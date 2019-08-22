@@ -1,13 +1,37 @@
 package com.evanco.levelupservice.model;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class LevelUp {
+
     private int levelUpId;
-    private int customerId;
-    private int points;
+
+    // wrapper and not primitive int to validate if supplied
+    @NotNull(message = "Please supply a customer id.")
+    private Integer customerId;
+
+    // wrapper and not primitive int to validate if supplied
+    @NotNull(message = "Please supply points.")
+    private Integer points;
+
+    @NotNull(message = "Please supply a member date.")
     private LocalDate memberDate;
+
+    // constructors
+
+    public LevelUp() {
+    }
+
+    public LevelUp(int levelUpId, int customerId, int points, LocalDate memberDate) {
+        this.levelUpId = levelUpId;
+        this.customerId = customerId;
+        this.points = points;
+        this.memberDate = memberDate;
+    }
+
+    // getters and setters
 
     public int getLevelUpId() {
         return levelUpId;
@@ -40,6 +64,8 @@ public class LevelUp {
     public void setMemberDate(LocalDate memberDate) {
         this.memberDate = memberDate;
     }
+
+    // override methods
 
     @Override
     public boolean equals(Object o) {
