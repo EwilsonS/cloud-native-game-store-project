@@ -61,9 +61,37 @@ public class LevelUpDaoJdcbTemplateImplTest {
 
     @Test
     public void getAllLevelUps() {
+        LevelUp levelUp = new LevelUp();
+        levelUp.setCustomerId(5);
+        levelUp.setPoints(20);
+        levelUp.setMemberDate(LocalDate.of(2019,1,26));
+        levelUpDao.addLevelUp(levelUp);
+        levelUpDao.addLevelUp(levelUp);
+        levelUpDao.addLevelUp(levelUp);
+
+        assertEquals(3, levelUpDao.getAllLevelUps().size());
     }
 
     @Test
     public void getLevelUpPointsByCustomerId() {
+        LevelUp levelUp = new LevelUp();
+        levelUp.setCustomerId(5);
+        levelUp.setPoints(80);
+        levelUp.setMemberDate(LocalDate.of(2019,1,26));
+        levelUp = levelUpDao.addLevelUp(levelUp);
+
+        LevelUp levelUp2 = new LevelUp();
+        levelUp2.setCustomerId(10);
+        levelUp2.setPoints(120);
+        levelUp2.setMemberDate(LocalDate.of(2019,1,26));
+        levelUp2 = levelUpDao.addLevelUp(levelUp2);
+
+        int points = levelUpDao.getLevelUpPointsByCustomerId(levelUp2.getCustomerId());
+        assertEquals(120, points);
     }
+
+//    @Test
+//    public void getLevelUpWithNullId(){
+//        assertNull(levelUpDao.getLevelUp(989898));
+//    }
 }
