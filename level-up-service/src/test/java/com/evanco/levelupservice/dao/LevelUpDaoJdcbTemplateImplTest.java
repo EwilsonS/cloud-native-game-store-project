@@ -1,5 +1,6 @@
 package com.evanco.levelupservice.dao;
 
+import com.evanco.levelupservice.exception.AmbiguousResultException;
 import com.evanco.levelupservice.exception.NotFoundException;
 import com.evanco.levelupservice.model.LevelUp;
 import org.junit.Before;
@@ -20,6 +21,7 @@ public class LevelUpDaoJdcbTemplateImplTest {
     @Autowired
     private LevelUpDao levelUpDao;
 
+    // clear level up table in database
     @Before
     public void setUp() throws Exception{
         levelUpDao.getAllLevelUps()
@@ -27,6 +29,7 @@ public class LevelUpDaoJdcbTemplateImplTest {
                 .forEach(l->levelUpDao.deleteLevelUp(l.getLevelUpId()));
     }
 
+    // tests addLevelUp(), getLevelUp() and deleteLevelUp()
     @Test
     public void addGetDeleteLevelUp() {
         LevelUp levelUp = new LevelUp();
@@ -46,6 +49,20 @@ public class LevelUpDaoJdcbTemplateImplTest {
         assertEquals(0, levelUpDao.getAllLevelUps().size());
     }
 
+    // tests if will return null if try to get level up with non-existent level up id
+    @Test
+    public void getLevelUpWithNonExistentId() {
+        LevelUp levelUp = levelUpDao.getLevelUp(500);
+        assertNull(levelUp);
+    }
+
+    // tests if will throw exception if id provided does not exist when trying to delete level up
+    @Test(expected  = NotFoundException.class)
+    public void deleteLevelUpWithNonExistentId() {
+        levelUpDao.deleteLevelUp(500);
+    }
+
+    // tests updateLevelUp()
     @Test
     public void updateLevelUp() {
         LevelUp levelUp = new LevelUp();
@@ -60,6 +77,21 @@ public class LevelUpDaoJdcbTemplateImplTest {
         assertEquals(500, levelUpDao.getLevelUp(levelUp.getLevelUpId()).getPoints());
     }
 
+    // tests if will throw exception if id provided does not exist when trying to update level up
+    @Test(expected  = IllegalArgumentException.class)
+    public void updateLevelUpWithIllegalArgumentException() {
+
+        LevelUp levelUp = new LevelUp();
+        levelUp.setLevelUpId(500);
+        levelUp.setCustomerId(5);
+        levelUp.setPoints(20);
+        levelUp.setMemberDate(LocalDate.of(2019,1,26));
+
+        levelUpDao.updateLevelUp(levelUp);
+
+    }
+
+    // tests getAllLevelUps()
     @Test
     public void getAllLevelUps() {
         LevelUp levelUp = new LevelUp();
@@ -73,6 +105,13 @@ public class LevelUpDaoJdcbTemplateImplTest {
         assertEquals(3, levelUpDao.getAllLevelUps().size());
     }
 
+    // test if it will return an empty array when there are no level ups
+    @Test
+    public void getAllLevelUpsWhenNoLevelUps() {
+        assertEquals(0, levelUpDao.getAllLevelUps().size());
+    }
+
+    // tests getLevelUpPointsByCustomerId()
     @Test
     public void getLevelUpPointsByCustomerId() {
         LevelUp levelUp = new LevelUp();
@@ -91,8 +130,30 @@ public class LevelUpDaoJdcbTemplateImplTest {
         assertEquals(120, points);
     }
 
-//    @Test(expected  = NotFoundException.class)
-//    public void getLevelUpByCustomerWithNonExistentId() {
-//        Integer levelUp = levelUpDao.getLevelUpPointsByCustomerId(500);
-//    }
+    // tests if will throw exception if the customer id does not exist
+    @Test
+    public void getLevelUpByCustomerWithNonExistentId() {
+        Integer levelUp = levelUpDao.getLevelUpPointsByCustomerId(500);
+        assertNull(levelUp);
+    }
+
+    // tests if will throw exception if there are multiple rows with the customer id
+    @Test(expected  = AmbiguousResultException.class)
+    public void getLevelUpByCustomerWithMultipleCustomerId() {
+
+        LevelUp levelUp = new LevelUp();
+        levelUp.setCustomerId(1);
+        levelUp.setPoints(80);
+        levelUp.setMemberDate(LocalDate.of(2019,1,26));
+        levelUpDao.addLevelUp(levelUp);
+
+        LevelUp levelUp2 = new LevelUp();
+        levelUp2.setCustomerId(1);
+        levelUp2.setPoints(120);
+        levelUp2.setMemberDate(LocalDate.of(2019,1,26));
+        levelUpDao.addLevelUp(levelUp2);
+
+        Integer levelUpPoints = levelUpDao.getLevelUpPointsByCustomerId(1);
+    }
+
 }

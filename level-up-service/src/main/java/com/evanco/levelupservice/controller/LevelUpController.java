@@ -3,7 +3,6 @@ package com.evanco.levelupservice.controller;
 import com.evanco.levelupservice.exception.NotFoundException;
 import com.evanco.levelupservice.model.LevelUp;
 import com.evanco.levelupservice.service.LevelUpService;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
