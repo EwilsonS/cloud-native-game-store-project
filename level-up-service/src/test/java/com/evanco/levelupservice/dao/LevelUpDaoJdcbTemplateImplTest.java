@@ -1,5 +1,6 @@
 package com.evanco.levelupservice.dao;
 
+import com.evanco.levelupservice.exception.NotFoundException;
 import com.evanco.levelupservice.model.LevelUp;
 import org.junit.Before;
 import org.junit.Test;
@@ -89,4 +90,9 @@ public class LevelUpDaoJdcbTemplateImplTest {
         int points = levelUpDao.getLevelUpPointsByCustomerId(levelUp2.getCustomerId());
         assertEquals(120, points);
     }
+
+//    @Test(expected  = NotFoundException.class)
+//    public void getLevelUpByCustomerWithNonExistentId() {
+//        Integer levelUp = levelUpDao.getLevelUpPointsByCustomerId(500);
+//    }
 }
