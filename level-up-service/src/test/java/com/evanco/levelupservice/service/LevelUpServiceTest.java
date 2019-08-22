@@ -3,13 +3,10 @@ package com.evanco.levelupservice.service;
 import com.evanco.levelupservice.dao.LevelUpDao;
 import com.evanco.levelupservice.dao.LevelUpDaoJdcbTemplateImpl;
 import com.evanco.levelupservice.model.LevelUp;
-import org.apache.commons.math.stat.descriptive.summary.Product;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -124,6 +121,31 @@ public class LevelUpServiceTest {
         assertNull(levelUp);
     }
 
+    // tests getLevelUpPointsByCustomerId()
+    @Test
+    public void getLevelUpPointsByCustomerId() {
+
+        LevelUp levelUp = new LevelUp();
+        levelUp.setLevelUpId(1);
+        levelUp.setCustomerId(1);
+        levelUp.setPoints(10);
+        levelUp.setMemberDate(LocalDate.of(2019, 1, 20));
+
+        LevelUp levelUp2 = new LevelUp();
+        levelUp2.setLevelUpId(2);
+        levelUp2.setCustomerId(2);
+        levelUp2.setPoints(30);
+        levelUp2.setMemberDate(LocalDate.of(2019, 2, 15));
+
+        Integer pointsForCust1 = levelUpService.getLevelUpPointsByCustomerId(levelUp.getLevelUpId());
+
+        assertEquals(10, (int) pointsForCust1);
+
+        Integer pointsForCust2 = levelUpService.getLevelUpPointsByCustomerId(levelUp2.getLevelUpId());
+
+        assertEquals(30, (int) pointsForCust2);
+    }
+
     // Create mocks
 
     public void setUpLevelUpMock() {
@@ -156,6 +178,9 @@ public class LevelUpServiceTest {
         doReturn(levelUp4).when(levelUpDao).addLevelUp(levelUp3);
         doReturn(levelUp2).when(levelUpDao).getLevelUp(1);
         doReturn(levelUp4).when(levelUpDao).getLevelUp(2);
+
+        doReturn(10).when(levelUpDao).getLevelUpPointsByCustomerId(1);
+        doReturn(30).when(levelUpDao).getLevelUpPointsByCustomerId(2);
 
         List<LevelUp> levelUpList = new ArrayList<>();
         levelUpList.add(levelUp2);
