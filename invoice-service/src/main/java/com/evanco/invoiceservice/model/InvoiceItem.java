@@ -1,14 +1,33 @@
 package com.evanco.invoiceservice.model;
 
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class InvoiceItem{
+
     private int invoiceItemId;
-    private int invoiceId;
-    private int inventoryId;
-    private int quantity;
+
+    // wrapper and not primitive int to validate if supplied
+//    @NotNull(message = "Please supply an invoice id.")
+    @Positive
+    private Integer invoiceId;
+
+    // wrapper and not primitive int to validate if supplied
+//    @NotNull(message = "BLEHHHHH")
+    @Positive
+    private Integer inventoryId;
+
+    // wrapper and not primitive int to validate if supplied
+//    @NotNull(message = "Please supply a quantity.")
+    private Integer quantity;
+
+//    @NotNull
+    @DecimalMin(value = "0.0", inclusive = true, message = "The min value you can enter for unit price is {value}.")
+    @DecimalMax(value = "99999.99", inclusive = true, message = "The max value you can enter for unit price is {value}")
     private BigDecimal unitPrice;
+
+    // getters and setters
 
     public int getInvoiceItemId() {
         return invoiceItemId;
@@ -19,6 +38,10 @@ public class InvoiceItem{
     }
 
     public int getInvoiceId() {
+        // added b/c @Valid not working to test @NotNull of list objects
+        if (invoiceId == null) {
+            throw new NullPointerException("An invoice id is required");
+        }
         return invoiceId;
     }
 
@@ -27,6 +50,10 @@ public class InvoiceItem{
     }
 
     public int getInventoryId() {
+        // added b/c @Valid not working to test @NotNull of list objects
+        if (inventoryId == null) {
+            throw new NullPointerException("An inventory id is required");
+        }
         return inventoryId;
     }
 
@@ -35,6 +62,10 @@ public class InvoiceItem{
     }
 
     public int getQuantity() {
+        // added b/c @Valid not working to test @NotNull of list objects
+        if (quantity == null) {
+            throw new NullPointerException("A quantity is required");
+        }
         return quantity;
     }
 
@@ -43,12 +74,18 @@ public class InvoiceItem{
     }
 
     public BigDecimal getUnitPrice() {
+        // added b/c @Valid not working to test @NotNull of list objects
+        if (unitPrice == null) {
+            throw new NullPointerException("A unit price is required");
+        }
         return unitPrice;
     }
 
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
+
+    // override methods
 
     @Override
     public boolean equals(Object o) {
@@ -77,4 +114,5 @@ public class InvoiceItem{
                 ", unitPrice=" + unitPrice +
                 '}';
     }
+
 }

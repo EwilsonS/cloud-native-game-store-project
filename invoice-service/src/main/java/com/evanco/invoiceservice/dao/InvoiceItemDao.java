@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface InvoiceItemDao {
 
+    // standard CRUD
+
     InvoiceItem addInvoiceItem(InvoiceItem invoiceItem);
 
     InvoiceItem getInvoiceItem(int id);
@@ -15,6 +17,8 @@ public interface InvoiceItemDao {
     void deleteInvoiceItem(int id);
 
     List<InvoiceItem> getAllInvoiceItems();
+
+    // additional methods
 
     List<InvoiceItem> getInvoiceItemsByInvoiceId(int invoiceId);
 }

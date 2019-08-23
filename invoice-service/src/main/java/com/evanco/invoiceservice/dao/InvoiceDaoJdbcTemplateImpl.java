@@ -7,7 +7,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import sun.invoke.empty.Empty;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,6 +15,7 @@ import java.util.List;
 
 @Repository
 public class InvoiceDaoJdbcTemplateImpl implements InvoiceDao {
+
     // init jdbc
     private JdbcTemplate jdbc;
 
@@ -57,6 +57,7 @@ public class InvoiceDaoJdbcTemplateImpl implements InvoiceDao {
     }
 
     @Override
+    @Transactional
     public void updateInvoice(Invoice invoice) {
         if(getInvoice(invoice.getInvoiceId())== null){
             throw new IllegalArgumentException("Invoice not found");
@@ -70,6 +71,7 @@ public class InvoiceDaoJdbcTemplateImpl implements InvoiceDao {
     }
 
     @Override
+    @Transactional
     public void deleteInvoice(int id) {
         if (getInvoice(id) == null) {
             throw new NotFoundException("Invoice not found");
@@ -79,20 +81,16 @@ public class InvoiceDaoJdbcTemplateImpl implements InvoiceDao {
 
     @Override
     public List<Invoice> getAllInvoices() {
-        try {
-            return jdbc.query(SELECT_ALL_INVOICES, this::mapRowToInvoice);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        // will return an empty list, not null, if there are no invoices
+        return jdbc.query(SELECT_ALL_INVOICES, this::mapRowToInvoice);
+
     }
 
     @Override
     public List<Invoice> getInvoicesByCustomerId(int customerId) {
-        try {
-            return jdbc.query(SELECT_INVOICES_BY_CUSTOMER_ID, this::mapRowToInvoice, customerId);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        // will return an empty list, not null, if there are no invoices
+        return jdbc.query(SELECT_INVOICES_BY_CUSTOMER_ID, this::mapRowToInvoice, customerId);
+
     }
 
 

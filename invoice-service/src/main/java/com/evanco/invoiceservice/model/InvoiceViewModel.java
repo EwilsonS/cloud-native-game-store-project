@@ -1,10 +1,15 @@
 package com.evanco.invoiceservice.model;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
 public class InvoiceViewModel extends Invoice {
+
+    @Valid
     private List<InvoiceItem> invoiceItems;
+
+    // getters and setters
 
     public List<InvoiceItem> getInvoiceItems() {
         return invoiceItems;
@@ -13,6 +18,8 @@ public class InvoiceViewModel extends Invoice {
     public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
         this.invoiceItems = invoiceItems;
     }
+
+    // override methods
 
     @Override
     public boolean equals(Object o) {
@@ -31,6 +38,11 @@ public class InvoiceViewModel extends Invoice {
     @Override
     public String toString() {
         return "InvoiceViewModel{" +
+                "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", customerId=" + customerId +
+                ", purchaseDate=" + purchaseDate +
+                '}' +
                 "invoiceItems=" + invoiceItems +
                 '}';
     }
