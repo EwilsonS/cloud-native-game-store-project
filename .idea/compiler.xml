@@ -7,17 +7,19 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="invoice-service" />
+        <module name="admin-api-service" />
         <module name="inventory-service" />
         <module name="eureka-service-registry" />
-        <module name="retail-api-service" />
         <module name="level-up-service" />
         <module name="level-up-circuit-breaker" />
         <module name="level-up-queue-consumer" />
-        <module name="customer-service" />
         <module name="spring-cloud-config-server" />
+        <module name="customer-service" />
+        <module name="retail-api-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="admin-api-service" target="1.8" />
       <module name="customer-service" target="1.8" />
       <module name="eureka-service-registry" target="1.8" />
       <module name="inventory-service" target="1.8" />
@@ -31,6 +33,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin-api-service" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="eureka-service-registry" options="-parameters" />
       <module name="inventory-service" options="-parameters" />
