@@ -58,12 +58,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/controller/InvoiceController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="690">
+                <state relative-caret-position="720">
                   <caret line="52" column="2" selection-start-line="52" selection-start-column="2" selection-end-line="52" selection-end-column="2" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#769#770#0" expanded="true" />
-                    <element signature="e#815#816#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -121,9 +119,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -278,13 +276,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="3" y="39" width="1306" height="787" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
       <window_info id="UI Designer" order="1" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.21202531" />
+      <window_info content_ui="combo" id="Project" order="5" visible="true" weight="0.21518987" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info id="simpleUML" order="7" />
       <window_info anchor="bottom" id="Terminal" order="0" />
@@ -382,12 +381,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/invoice-service/src/main/java/com/evanco/invoiceservice/controller/InvoiceController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
+        <state relative-caret-position="720">
           <caret line="52" column="2" selection-start-line="52" selection-start-column="2" selection-end-line="52" selection-end-column="2" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#769#770#0" expanded="true" />
-            <element signature="e#815#816#0" expanded="true" />
           </folding>
         </state>
       </provider>
