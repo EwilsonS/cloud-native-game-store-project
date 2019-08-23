@@ -1,8 +1,7 @@
-package com.evanco.invoiceservice.controller;
+package com.company.adminapiservice.controller;
 
-import com.evanco.invoiceservice.exception.NotFoundException;
-import com.evanco.invoiceservice.model.InvoiceViewModel;
-import com.evanco.invoiceservice.service.InvoiceService;
+import com.company.adminapiservice.service.InvoiceService;
+import com.company.adminapiservice.util.messages.Invoice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -29,7 +28,7 @@ public class InvoiceController {
     @CachePut(key = "#result.getInvoiceId()")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public InvoiceViewModel addInvoice(@RequestBody @Valid InvoiceViewModel ivm){
+    public Invoice addInvoice(@RequestBody Invoice ivm){
         return service.addInvoice(ivm);
     }
 
@@ -37,7 +36,7 @@ public class InvoiceController {
     // handles requests to retrieve all invoices
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<InvoiceViewModel> getAllInvoices(){
+    public List<Invoice> getAllInvoices(){
         return service.getAllInvoices();
     }
 
@@ -46,13 +45,8 @@ public class InvoiceController {
     @Cacheable
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public InvoiceViewModel getInvoice(@PathVariable("id") int id){
-        InvoiceViewModel invoice = service.getInvoice(id);
-        if (invoice == null) {
-            System.out.println("invoice null in controller");
-            throw new NotFoundException("Invoice could not be retrieved for id " + id);
-        }
-        return invoice;
+    public Invoice getInvoice(@PathVariable("id") int id){
+        return service.getInvoice(id);
     }
 
     // removes invoice with given invoice id as the key from the cache
@@ -60,7 +54,7 @@ public class InvoiceController {
     @CacheEvict(key = "#ivm.getInvoiceId()")
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateInvoice(@RequestBody @Valid InvoiceViewModel ivm, @PathVariable("id") int id){
+    public void updateInvoice(@RequestBody @Valid Invoice ivm, @PathVariable("id") int id){
         if (ivm.getInvoiceId() == 0)
             ivm.setInvoiceId(id);
         if (id != ivm.getInvoiceId()) {
@@ -82,7 +76,7 @@ public class InvoiceController {
     // handles requests to retrieve all invoices by customer id
     @GetMapping("/customer/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public List<InvoiceViewModel> getInvoiceByCustomerId(@PathVariable("id") int id){
+    public List<Invoice> getInvoiceByCustomerId(@PathVariable("id") int id){
         return service.getInvoicesByCustomerId(id);
     }
 }

@@ -75,7 +75,7 @@ public class InvoiceItemDaoJdbcTemplateImplTest {
         // update
         invoiceItem.setQuantity(99);
         invoiceItemDao.updateInvoiceItem(invoiceItem);
-        assertEquals(99, invoiceItemDao.getInvoiceItem(invoiceItem.getInvoiceItemId()).getQuantity());
+        assertEquals(99, (int) invoiceItemDao.getInvoiceItem(invoiceItem.getInvoiceItemId()).getQuantity());
 
     }
 
@@ -158,7 +158,7 @@ public class InvoiceItemDaoJdbcTemplateImplTest {
         invoiceItem.setInvoiceItemId(100202299);
         invoiceItem.setQuantity(99);
         invoiceItemDao.updateInvoiceItem(invoiceItem);
-        assertEquals(99, invoiceItemDao.getInvoiceItem(invoiceItem.getInvoiceItemId()).getQuantity());
+        assertEquals(99, (int) invoiceItemDao.getInvoiceItem(invoiceItem.getInvoiceItemId()).getQuantity());
 
     }
 }

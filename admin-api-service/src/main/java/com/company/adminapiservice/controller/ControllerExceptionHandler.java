@@ -68,10 +68,20 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<VndErrors> feignNotFoundException(FeignException e, WebRequest request) {
 
+        System.out.println(e);
+        System.out.println("------");
+        System.out.println(e.contentUTF8());
         // extracts exception message from remote service
         int begIdx = e.contentUTF8().indexOf("message")+10;
-        int endIdx = e.contentUTF8().indexOf("links")-3;
-        String msg = e.contentUTF8().substring(begIdx, endIdx);
+        int endIdx;
+        String msg;
+        try {
+            endIdx = e.contentUTF8().indexOf("links") - 3;
+            msg = e.contentUTF8().substring(begIdx, endIdx);
+        } catch (Exception s) {
+            endIdx = e.contentUTF8().indexOf("path") - 3;
+            msg = e.contentUTF8().substring(begIdx, endIdx);
+        }
 
         // displays Not Found Status and exception message from remote service
         VndErrors error = new VndErrors(request.toString(), msg);
