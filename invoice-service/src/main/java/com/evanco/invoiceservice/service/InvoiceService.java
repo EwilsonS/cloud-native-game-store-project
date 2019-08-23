@@ -63,11 +63,25 @@ public class InvoiceService {
 
     // update invoice
     public void updateInvoice(InvoiceViewModel ivm, int id) {
+
+        //update invoice
         Invoice invoice = new Invoice();
         invoice.setInvoiceId(id);
         invoice.setCustomerId(ivm.getCustomerId());
         invoice.setPurchaseDate(ivm.getPurchaseDate());
         invoiceDao.updateInvoice(invoice);
+
+        // update invoice items
+        invoiceItemDao.getInvoiceItemsByInvoiceId(id)
+                .forEach(ii -> invoiceItemDao.deleteInvoiceItem(ii.getInvoiceItemId()));
+        for(InvoiceItem ii: ivm.getInvoiceItems()){
+            InvoiceItem invoiceItem = new InvoiceItem();
+            invoiceItem.setQuantity(ii.getQuantity());
+            invoiceItem.setInvoiceId(invoice.getInvoiceId());
+            invoiceItem.setUnitPrice(ii.getUnitPrice());
+            invoiceItem.setInventoryId(ii.getInventoryId());
+            invoiceItemDao.addInvoiceItem(invoiceItem);
+        }
     }
 
     // delete invoice
