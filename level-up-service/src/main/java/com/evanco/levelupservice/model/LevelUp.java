@@ -1,6 +1,7 @@
 package com.evanco.levelupservice.model;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public class LevelUp {
 
     // wrapper and not primitive int to validate if supplied
     @NotNull(message = "Please supply a customer id.")
+    @Positive
     private Integer customerId;
 
     // wrapper and not primitive int to validate if supplied
@@ -50,6 +52,10 @@ public class LevelUp {
     }
 
     public int getPoints() {
+        // helps avoid NullPointer Exceptions when doing calculations
+        if (points == null) {
+            return 0;
+        }
         return points;
     }
 

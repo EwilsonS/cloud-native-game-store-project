@@ -92,7 +92,7 @@ public class InvoiceItemDaoJdbcTemplateImplTest {
         invoiceItem.setUnitPrice(new BigDecimal("29.99"));
         invoiceItem = invoiceItemDao.addInvoiceItem(invoiceItem);
         invoiceItem = invoiceItemDao.addInvoiceItem(invoiceItem);
-        invoiceItem = invoiceItemDao.addInvoiceItem(invoiceItem);
+        invoiceItemDao.addInvoiceItem(invoiceItem);
 
         assertEquals(3, invoiceItemDao.getAllInvoiceItems().size());
     }
@@ -112,14 +112,14 @@ public class InvoiceItemDaoJdbcTemplateImplTest {
         invoiceItem.setInventoryId(5);
         invoiceItem.setQuantity(2);
         invoiceItem.setUnitPrice(new BigDecimal("29.99"));
-        invoiceItem = invoiceItemDao.addInvoiceItem(invoiceItem);
+        invoiceItemDao.addInvoiceItem(invoiceItem);
 
         InvoiceItem invoiceItem2 = new InvoiceItem();
         invoiceItem2.setInvoiceId(invoice2.getInvoiceId());
         invoiceItem2.setInventoryId(5);
         invoiceItem2.setQuantity(2);
         invoiceItem2.setUnitPrice(new BigDecimal("29.99"));
-        invoiceItem2 = invoiceItemDao.addInvoiceItem(invoiceItem2);
+        invoiceItemDao.addInvoiceItem(invoiceItem2);
 
         // get by invoice id
         assertEquals(1, invoiceItemDao.getInvoiceItemsByInvoiceId(invoice2.getInvoiceId()).size());

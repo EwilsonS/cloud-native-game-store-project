@@ -18,5 +18,7 @@ public interface LevelUpDao {
 
     List<LevelUp> getAllLevelUps();
 
+    // additional methods
+
     Integer getLevelUpPointsByCustomerId(int customerId);
 }

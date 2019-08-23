@@ -98,7 +98,7 @@ public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
 
     @Override
     public List<LevelUp> getAllLevelUps() {
-        // will return an empty array, not null, if there are no level ups
+        // will return an empty list, not null, if there are no level ups
         return jdbc.query(SELECT_ALL_LEVEL_UPS, this::mapRowToLevelUp);
     }
 

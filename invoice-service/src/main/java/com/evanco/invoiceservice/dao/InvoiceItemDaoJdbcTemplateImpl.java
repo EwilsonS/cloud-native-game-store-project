@@ -14,6 +14,7 @@ import java.util.List;
 
 @Repository
 public class InvoiceItemDaoJdbcTemplateImpl implements InvoiceItemDao {
+
     // init jdbc
     private JdbcTemplate jdbc;
 
@@ -62,6 +63,7 @@ public class InvoiceItemDaoJdbcTemplateImpl implements InvoiceItemDao {
     }
 
     @Override
+    @Transactional
     public void updateInvoiceItem(InvoiceItem invoiceItem) {
         if(getInvoiceItem(invoiceItem.getInvoiceItemId())== null){
             throw new IllegalArgumentException("Invoice not found");
@@ -77,6 +79,7 @@ public class InvoiceItemDaoJdbcTemplateImpl implements InvoiceItemDao {
     }
 
     @Override
+    @Transactional
     public void deleteInvoiceItem(int id) {
         if(getInvoiceItem(id)== null){
             throw new NotFoundException("Invoice not found");
@@ -86,20 +89,16 @@ public class InvoiceItemDaoJdbcTemplateImpl implements InvoiceItemDao {
 
     @Override
     public List<InvoiceItem> getAllInvoiceItems() {
-        try {
-            return jdbc.query(SELECT_ALL_INVOICE_ITEMS, this::mapRowToInvoiceItem);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        // will return an empty list, not null, if there are no invoice items
+        return jdbc.query(SELECT_ALL_INVOICE_ITEMS, this::mapRowToInvoiceItem);
+
     }
 
     @Override
     public List<InvoiceItem> getInvoiceItemsByInvoiceId(int invoiceId) {
-        try {
-            return jdbc.query(SELECT_INVOICE_ITEMS_BY_INVOICE_ID, this::mapRowToInvoiceItem, invoiceId);
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        // will return an empty list, not null, if there are no invoice items
+        return jdbc.query(SELECT_INVOICE_ITEMS_BY_INVOICE_ID, this::mapRowToInvoiceItem, invoiceId);
+
     }
 
 

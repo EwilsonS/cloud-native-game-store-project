@@ -14,6 +14,7 @@ import java.util.List;
 
 @Component
 public class InvoiceService {
+
     // Field injection
     InvoiceDao invoiceDao;
     InvoiceItemDao invoiceItemDao;
@@ -34,6 +35,11 @@ public class InvoiceService {
         invoice.setPurchaseDate(ivm.getPurchaseDate());
         invoice = invoiceDao.addInvoice(invoice);
 
+        // handles if user does not input invoice items preventing null pointer exception
+        // invoice may be created without invoice item if bill for non-item fees
+        if (ivm.getInvoiceItems() == null) {
+            ivm.setInvoiceItems(new ArrayList<>());
+        }
         for(InvoiceItem ii: ivm.getInvoiceItems()){
             InvoiceItem invoiceItem = new InvoiceItem();
             invoiceItem.setQuantity(ii.getQuantity());
@@ -47,7 +53,12 @@ public class InvoiceService {
 
     // get invoice
     public InvoiceViewModel getInvoice(int id) {
-        return buildInvoiceViewModel(invoiceDao.getInvoice(id));
+        // prevents null pointer exception when trying to build invoice view model
+        Invoice invoice = invoiceDao.getInvoice(id);
+        if(invoice == null )
+            return null;
+        else
+            return buildInvoiceViewModel(invoice);
     }
 
     // update invoice
@@ -76,7 +87,7 @@ public class InvoiceService {
         return ivms;
     }
     // get invoices by customer id
-    public List<InvoiceViewModel> getInvoiceByCustomerId(int id) {
+    public List<InvoiceViewModel> getInvoicesByCustomerId(int id) {
         List<InvoiceViewModel> ivms = new ArrayList<>();
         for (Invoice i : invoiceDao.getInvoicesByCustomerId(id)) {
             ivms.add(buildInvoiceViewModel(i));
