@@ -2,9 +2,10 @@ package com.company.customerservice.model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Customer {
+public class Customer implements Serializable {
 
     private int customerId;
 

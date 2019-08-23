@@ -13,15 +13,12 @@ public class InvoiceItem {
     private Integer invoiceId;
 
     // wrapper and not primitive int to validate if supplied
-//    @NotNull(message = "BLEHHHHH")
     @Positive
     private Integer inventoryId;
 
     // wrapper and not primitive int to validate if supplied
-//    @NotNull(message = "Please supply a quantity.")
     private Integer quantity;
 
-//    @NotNull
     @DecimalMin(value = "0.0", inclusive = true, message = "The min value you can enter for unit price is {value}.")
     @DecimalMax(value = "99999.99", inclusive = true, message = "The max value you can enter for unit price is {value}")
     private BigDecimal unitPrice;

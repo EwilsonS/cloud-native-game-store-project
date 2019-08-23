@@ -1,28 +1,39 @@
 package com.evanco.invoiceservice.model;
 
 import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class InvoiceItem{
+public class InvoiceItem implements Serializable {
 
     private int invoiceItemId;
 
     private Integer invoiceId;
 
     // wrapper and not primitive int to validate if supplied
-//    @NotNull(message = "BLEHHHHH")
     @Positive
     private Integer inventoryId;
 
     // wrapper and not primitive int to validate if supplied
-//    @NotNull(message = "Please supply a quantity.")
     private Integer quantity;
 
-//    @NotNull
     @DecimalMin(value = "0.0", inclusive = true, message = "The min value you can enter for unit price is {value}.")
     @DecimalMax(value = "99999.99", inclusive = true, message = "The max value you can enter for unit price is {value}")
     private BigDecimal unitPrice;
+
+    // constructors
+
+    public InvoiceItem() {
+    }
+
+    public InvoiceItem(int invoiceItemId, Integer invoiceId, Integer inventoryId, Integer quantity, BigDecimal unitPrice) {
+        this.invoiceItemId = invoiceItemId;
+        this.invoiceId = invoiceId;
+        this.inventoryId = inventoryId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
 
     // getters and setters
 

@@ -49,7 +49,6 @@ public class InvoiceController {
     public InvoiceViewModel getInvoice(@PathVariable("id") int id){
         InvoiceViewModel invoice = service.getInvoice(id);
         if (invoice == null) {
-            System.out.println("invoice null in controller");
             throw new NotFoundException("Invoice could not be retrieved for id " + id);
         }
         return invoice;
