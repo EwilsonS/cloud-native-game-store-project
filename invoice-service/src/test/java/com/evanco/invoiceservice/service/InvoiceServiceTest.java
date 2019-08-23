@@ -154,6 +154,35 @@ public class InvoiceServiceTest {
 
     }
 
+    // tests if updates invoice items updateInvoice()
+    @Test
+    public void updateInvoiceItems() {
+
+        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        invoiceVM.setInvoiceId(2);
+        invoiceVM.setCustomerId(3);
+        invoiceVM.setPurchaseDate(LocalDate.of(2019, 5, 10));
+
+        InvoiceItem invoiceItem = new InvoiceItem();
+        invoiceItem.setInvoiceId(1);
+        invoiceItem.setInventoryId(5);
+        invoiceItem.setQuantity(2);
+        invoiceItem.setUnitPrice(new BigDecimal("29.99"));
+
+        List<InvoiceItem> itemList = new ArrayList<>();
+        itemList.add(invoiceItem);
+
+        invoiceVM.setInvoiceItems(itemList);
+
+        invoiceService.updateInvoice(invoiceVM, invoiceVM.getInvoiceId());
+        ArgumentCaptor<Invoice> postCaptor = ArgumentCaptor.forClass(Invoice.class);
+        verify(invoiceDao).updateInvoice(postCaptor.capture());
+        assertEquals(invoiceVM.getCustomerId(), postCaptor.getValue().getCustomerId());
+
+        verify(invoiceItemDao).getInvoiceItemsByInvoiceId(postCaptor.getValue().getInvoiceId());
+
+    }
+
     // tests getInvoicesByCustomerId()
     @Test
     public void getInvoicesByCustomerId() {

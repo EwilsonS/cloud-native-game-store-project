@@ -79,4 +79,5 @@ public class InvoiceController {
     public List<Invoice> getInvoiceByCustomerId(@PathVariable("id") int id){
         return service.getInvoicesByCustomerId(id);
     }
+
 }

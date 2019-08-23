@@ -1,11 +1,14 @@
 package com.company.adminapiservice.service;
-/*
-import com.evanco.levelupservice.dao.LevelUpDao;
-import com.evanco.levelupservice.dao.LevelUpDaoJdcbTemplateImpl;
-import com.evanco.levelupservice.model.LevelUp;
+
+
+import com.company.adminapiservice.util.feign.CustomerClient;
+import com.company.adminapiservice.util.feign.LevelUpClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,6 +19,27 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 public class LevelUpServiceTest {
+
+    @InjectMocks
+    private LevelUpService levelUpService;
+
+    @Mock
+    private LevelUpClient levelUpClient;
+
+    @Before
+    public void setUp() {
+
+        MockitoAnnotations.initMocks(this);
+
+        // configure mock objects
+        setUpCustomerClientMock();
+
+        // Passes mock objects
+        customerService = new CustomerService(customerClient);
+
+    }
+
+
 
     LevelUpService levelUpService;
     LevelUpDao levelUpDao;

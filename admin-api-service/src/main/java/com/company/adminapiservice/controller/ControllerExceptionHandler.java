@@ -3,7 +3,6 @@ package com.company.adminapiservice.controller;
 import com.company.adminapiservice.exception.NotFoundException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import feign.FeignException;
-import feign.codec.EncodeException;
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

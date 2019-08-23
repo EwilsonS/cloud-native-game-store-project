@@ -24,12 +24,12 @@ public class ProductController {
 
     // constructors
 
-//    public ProductController() {
-//    }
-//
-//    public ProductController(ProductService productService) {
-//        this.productService = productService;
-//    }
+    public ProductController() {
+    }
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     // Product Routes
 
