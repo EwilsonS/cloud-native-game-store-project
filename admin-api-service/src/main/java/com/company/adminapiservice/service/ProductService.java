@@ -40,7 +40,6 @@ public class ProductService {
         productClient.deleteProduct(id);
     }
 
-
     public List<Product> getAllProducts() {
         return productClient.getAllProducts();
     }

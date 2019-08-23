@@ -1,7 +1,6 @@
 package com.company.adminapiservice.service;
 
 import com.company.adminapiservice.util.feign.CustomerClient;
-import com.company.adminapiservice.util.feign.ProductClient;
 import com.company.adminapiservice.util.messages.Customer;
 import org.junit.Before;
 import org.junit.Test;

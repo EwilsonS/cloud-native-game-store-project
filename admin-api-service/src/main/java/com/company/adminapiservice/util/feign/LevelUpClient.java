@@ -2,7 +2,6 @@ package com.company.adminapiservice.util.feign;
 
 import com.company.adminapiservice.util.messages.LevelUp;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
