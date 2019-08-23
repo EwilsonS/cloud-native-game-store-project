@@ -32,9 +32,6 @@ public class InventoryServiceTest {
         // configure mock objects
         setUpInventoryClientMock();
 
-        // Passes mock objects
-        inventoryService = new InventoryService(inventoryClient);
-
     }
 
     // tests addInventory()

@@ -62,11 +62,31 @@ public class Invoice {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Invoice invoice = (Invoice) o;
-        return getInvoiceId() == invoice.getInvoiceId() &&
-                getCustomerId().equals(invoice.getCustomerId()) &&
-                Objects.equals(getPurchaseDate(), invoice.getPurchaseDate()) &&
-                Objects.equals(getInvoiceItems(), invoice.getInvoiceItems());
+        Invoice that = (Invoice) o;
+
+        boolean check = false;
+        if(getInvoiceId() == that.getInvoiceId()) {
+            check = true;
+        }else{
+            return false;
+        }
+        if((getCustomerId() == null && that.getCustomerId() == null) || getCustomerId().equals(that.getCustomerId())){
+            check=true;
+        }else{
+            return false;
+        }
+        if((getPurchaseDate() == null && that.getPurchaseDate() == null) || getPurchaseDate().equals(that.getPurchaseDate())){
+            check = true;
+        }else{
+            return false;
+        }
+        if((getInvoiceItems() == null && that.getInvoiceItems() == null) || getInvoiceItems().equals(that.getInvoiceItems())){
+            check = true;
+        }else{
+            return false;
+        }
+        return check ;
+
     }
 
     @Override

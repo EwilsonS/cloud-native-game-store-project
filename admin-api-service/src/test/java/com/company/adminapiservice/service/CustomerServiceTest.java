@@ -33,9 +33,6 @@ public class CustomerServiceTest {
         // configure mock objects
         setUpCustomerClientMock();
 
-        // Passes mock objects
-        customerService = new CustomerService(customerClient);
-
     }
 
     // tests addCustomer()

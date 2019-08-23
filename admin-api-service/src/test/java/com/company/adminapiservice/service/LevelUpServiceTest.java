@@ -1,7 +1,5 @@
 package com.company.adminapiservice.service;
 
-
-import com.company.adminapiservice.util.feign.CustomerClient;
 import com.company.adminapiservice.util.feign.LevelUpClient;
 import com.company.adminapiservice.util.messages.LevelUp;
 import org.junit.Before;
@@ -34,9 +32,6 @@ public class LevelUpServiceTest {
 
         // configure mock objects
         setUpLevelUpClientMock();
-
-        // Passes mock objects
-        levelUpService = new LevelUpService(levelUpClient);
 
     }
 
@@ -85,7 +80,6 @@ public class LevelUpServiceTest {
         levelUp.setCustomerId(2);
         levelUp.setPoints(30);
         levelUp.setMemberDate(LocalDate.of(2019, 2, 15));
-
 
         levelUpService.addLevelUp(levelUp);
 
