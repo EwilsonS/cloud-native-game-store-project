@@ -12,10 +12,17 @@ public class CustomerService {
 
     CustomerClient customerClient;
 
+    // constructors
+
+    public CustomerService() {
+    }
+
     @Autowired
     public CustomerService(CustomerClient customerClient) {
         this.customerClient = customerClient;
     }
+
+    // methods
 
     public Customer addCustomer(Customer customer) {
         return customerClient.addCustomer(customer);

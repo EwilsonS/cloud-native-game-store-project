@@ -84,11 +84,28 @@ public class InvoiceItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceItem that = (InvoiceItem) o;
-        return getInvoiceItemId() == that.getInvoiceItemId() &&
-                Objects.equals(getInvoiceId(), that.getInvoiceId()) &&
-                getInventoryId().equals(that.getInventoryId()) &&
-                getQuantity().equals(that.getQuantity()) &&
-                getUnitPrice().equals(that.getUnitPrice());
+        boolean check = false;
+            if((getInvoiceId() == null && that.getInvoiceId() == null) || getInvoiceId().equals(that.getInvoiceId())) {
+                check = true;
+            }else{
+                return false;
+            }
+            if((getInventoryId() == null && that.getInventoryId() == null) || getInventoryId().equals(that.getInventoryId())){
+                check=true;
+            }else{
+                return false;
+            }
+            if((getQuantity() == null && that.getQuantity() == null) || getQuantity().equals(that.getQuantity())){
+                check = true;
+            }else{
+                return false;
+            }
+            if((getUnitPrice() == null && that.getUnitPrice() == null) ||getUnitPrice().equals(that.getUnitPrice())){
+                check = true;
+            }else{
+                return false;
+            }
+        return check ;
     }
 
     @Override
