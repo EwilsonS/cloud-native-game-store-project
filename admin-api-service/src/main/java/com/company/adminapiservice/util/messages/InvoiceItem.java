@@ -23,6 +23,19 @@ public class InvoiceItem {
     @DecimalMax(value = "99999.99", inclusive = true, message = "The max value you can enter for unit price is {value}")
     private BigDecimal unitPrice;
 
+    // constructors
+
+    public InvoiceItem() {
+    }
+
+    public InvoiceItem(int invoiceItemId, Integer invoiceId, Integer inventoryId, Integer quantity, BigDecimal unitPrice) {
+        this.invoiceItemId = invoiceItemId;
+        this.invoiceId = invoiceId;
+        this.inventoryId = inventoryId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
+
     // getters and setters
 
     public int getInvoiceItemId() {
