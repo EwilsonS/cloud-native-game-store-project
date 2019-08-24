@@ -33,10 +33,7 @@ public class ProductServiceTest {
 
         // configure mock objects
         setUpProductClientMock();
-
-        // Passes mock objects
-        productService = new ProductService(productClient);
-
+        
     }
 
     // tests addProduct()

@@ -11,20 +11,20 @@ import java.util.List;
 public interface InvoiceClient {
 
     @RequestMapping(value = "/invoices", method = RequestMethod.POST)
-    public Invoice addInvoice(@RequestBody @Valid Invoice ivm);
+    Invoice addInvoice(@RequestBody @Valid Invoice ivm);
 
     @RequestMapping(value = "/invoices", method = RequestMethod.GET)
-    public List<Invoice> getAllInvoices();
+    List<Invoice> getAllInvoices();
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.GET)
-    public Invoice getInvoice(@PathVariable("id") int id);
+    Invoice getInvoice(@PathVariable("id") int id);
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.PUT)
-    public void updateInvoice(@RequestBody @Valid Invoice ivm, @PathVariable("id") int id);
+    void updateInvoice(@RequestBody @Valid Invoice ivm, @PathVariable("id") int id);
 
     @RequestMapping(value = "/invoices/{id}", method = RequestMethod.DELETE)
-    public void deleteInvoice(@PathVariable("id") int id);
+    void deleteInvoice(@PathVariable("id") int id);
 
     @RequestMapping(value = "/invoices//customer/{id}", method = RequestMethod.GET)
-    public List<Invoice> getInvoiceByCustomerId(@PathVariable("id") int id);
+    List<Invoice> getInvoiceByCustomerId(@PathVariable("id") int id);
 }

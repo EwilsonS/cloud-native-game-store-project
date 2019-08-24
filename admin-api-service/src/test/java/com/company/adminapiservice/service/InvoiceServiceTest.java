@@ -1,40 +1,40 @@
-package com.evanco.invoiceservice.service;
+package com.company.adminapiservice.service;
 
-import com.evanco.invoiceservice.dao.InvoiceDao;
-import com.evanco.invoiceservice.dao.InvoiceDaoJdbcTemplateImpl;
-import com.evanco.invoiceservice.dao.InvoiceItemDao;
-import com.evanco.invoiceservice.dao.InvoiceItemDaoJdbcTemplateImpl;
-import com.evanco.invoiceservice.model.Invoice;
-import com.evanco.invoiceservice.model.InvoiceItem;
-import com.evanco.invoiceservice.model.InvoiceViewModel;
+import com.company.adminapiservice.util.feign.InvoiceClient;
+
+import com.company.adminapiservice.util.messages.Invoice;
+import com.company.adminapiservice.util.messages.InvoiceItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class InvoiceServiceTest {
 
-    InvoiceService invoiceService;
-    InvoiceDao invoiceDao;
-    InvoiceItemDao invoiceItemDao;
+
+    @InjectMocks
+    private InvoiceService invoiceService;
+
+    @Mock
+    private InvoiceClient invoiceClient;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+
+        MockitoAnnotations.initMocks(this);
 
         // configure mock objects
-        setUpInvoiceMock();
-        setUpInvoiceItemMock();
-
-        // Passes mock objects
-        invoiceService = new InvoiceService(invoiceDao, invoiceItemDao);
+        setUpInvoiceClientMock();
 
     }
 
@@ -45,24 +45,21 @@ public class InvoiceServiceTest {
         List<InvoiceItem> invoiceItems = new ArrayList<>();
 
         InvoiceItem invoiceItem = new InvoiceItem();
-        invoiceItem.setInvoiceId(1);
+        invoiceItem.setInvoiceId(0);
         invoiceItem.setInventoryId(5);
         invoiceItem.setQuantity(2);
         invoiceItem.setUnitPrice(new BigDecimal("29.99"));
 
         invoiceItems.add(invoiceItem);
 
-        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        Invoice invoiceVM = new Invoice();
         invoiceVM.setCustomerId(1);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 7, 15));
         invoiceVM.setInvoiceItems(invoiceItems);
 
         invoiceVM = invoiceService.addInvoice(invoiceVM);
 
-        InvoiceViewModel invoiceVM1 = invoiceService.getInvoice(invoiceVM.getInvoiceId());
-
-        System.out.println("invoice: " + invoiceVM);
-        System.out.println("invoice from service: " + invoiceVM1);
+        Invoice invoiceVM1 = invoiceService.getInvoice(invoiceVM.getInvoiceId());
 
         assertEquals(invoiceVM, invoiceVM1);
     }
@@ -70,7 +67,7 @@ public class InvoiceServiceTest {
     // tests if returns null when trying to retrieve invoice with non existent invoice id
     @Test
     public void getInvoiceWithNonExistentId() {
-        InvoiceViewModel invoiceVM = invoiceService.getInvoice(500);
+        Invoice invoiceVM = invoiceService.getInvoice(500);
         assertNull(invoiceVM);
     }
 
@@ -78,13 +75,13 @@ public class InvoiceServiceTest {
     @Test
     public void addInvoiceVMWithNoList() {
 
-        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        Invoice invoiceVM = new Invoice();
         invoiceVM.setCustomerId(2);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 5, 10));
 
         invoiceVM = invoiceService.addInvoice(invoiceVM);
 
-        InvoiceViewModel invoiceVM1 = invoiceService.getInvoice(invoiceVM.getInvoiceId());
+        Invoice invoiceVM1 = invoiceService.getInvoice(invoiceVM.getInvoiceId());
 
         assertEquals(invoiceVM, invoiceVM1);
         assertEquals(0, invoiceVM1.getInvoiceItems().size());
@@ -105,20 +102,20 @@ public class InvoiceServiceTest {
 
         invoiceItems.add(invoiceItem);
 
-        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        Invoice invoiceVM = new Invoice();
         invoiceVM.setCustomerId(1);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 7, 15));
         invoiceVM.setInvoiceItems(invoiceItems);
 
         invoiceService.addInvoice(invoiceVM);
 
-        invoiceVM = new InvoiceViewModel();
+        invoiceVM = new Invoice();
         invoiceVM.setCustomerId(2);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 5, 10));
 
         invoiceService.addInvoice(invoiceVM);
 
-        List<InvoiceViewModel> fromService = invoiceService.getAllInvoices();
+        List<Invoice> fromService = invoiceService.getAllInvoices();
 
         assertEquals(2, fromService.size());
 
@@ -127,10 +124,10 @@ public class InvoiceServiceTest {
     // tests deleteInvoice()
     @Test
     public void deleteInvoice() {
-        InvoiceViewModel levelUp = invoiceService.getInvoice(1);
+        Invoice levelUp = invoiceService.getInvoice(1);
         invoiceService.deleteInvoice(1);
         ArgumentCaptor<Integer> postCaptor = ArgumentCaptor.forClass(Integer.class);
-        verify(invoiceDao).deleteInvoice(postCaptor.capture());
+        verify(invoiceClient).deleteInvoice(postCaptor.capture());
         assertEquals(levelUp.getInvoiceId(), postCaptor.getValue().intValue());
     }
 
@@ -138,7 +135,7 @@ public class InvoiceServiceTest {
     @Test
     public void updateInvoice() {
 
-        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        Invoice invoiceVM = new Invoice();
         invoiceVM.setInvoiceId(2);
         invoiceVM.setCustomerId(3);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 5, 10));
@@ -146,7 +143,7 @@ public class InvoiceServiceTest {
 
         invoiceService.updateInvoice(invoiceVM, invoiceVM.getInvoiceId());
         ArgumentCaptor<Invoice> postCaptor = ArgumentCaptor.forClass(Invoice.class);
-        verify(invoiceDao).updateInvoice(postCaptor.capture());
+        verify(invoiceClient).updateInvoice(postCaptor.capture(), any(Integer.class));
         assertEquals(invoiceVM.getCustomerId(), postCaptor.getValue().getCustomerId());
 
     }
@@ -155,7 +152,7 @@ public class InvoiceServiceTest {
     @Test
     public void updateInvoiceItems() {
 
-        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        Invoice invoiceVM = new Invoice();
         invoiceVM.setInvoiceId(2);
         invoiceVM.setCustomerId(3);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 5, 10));
@@ -173,10 +170,8 @@ public class InvoiceServiceTest {
 
         invoiceService.updateInvoice(invoiceVM, invoiceVM.getInvoiceId());
         ArgumentCaptor<Invoice> postCaptor = ArgumentCaptor.forClass(Invoice.class);
-        verify(invoiceDao).updateInvoice(postCaptor.capture());
+        verify(invoiceClient).updateInvoice(postCaptor.capture(), any(Integer.class));
         assertEquals(invoiceVM.getCustomerId(), postCaptor.getValue().getCustomerId());
-
-        verify(invoiceItemDao).getInvoiceItemsByInvoiceId(postCaptor.getValue().getInvoiceId());
 
     }
 
@@ -195,46 +190,82 @@ public class InvoiceServiceTest {
 
         invoiceItems.add(invoiceItem);
 
-        InvoiceViewModel invoiceVM = new InvoiceViewModel();
+        Invoice invoiceVM = new Invoice();
         invoiceVM.setInvoiceId(1);
         invoiceVM.setCustomerId(1);
         invoiceVM.setPurchaseDate(LocalDate.of(2019, 7, 15));
         invoiceVM.setInvoiceItems(invoiceItems);
 
-        InvoiceViewModel invoiceVM2 = new InvoiceViewModel();
+        Invoice invoiceVM2 = new Invoice();
         invoiceVM2.setInvoiceId(2);
         invoiceVM2.setCustomerId(2);
         invoiceVM2.setPurchaseDate(LocalDate.of(2019, 5, 10));
         invoiceVM2.setInvoiceItems(new ArrayList<>());
 
-        List<InvoiceViewModel> invoicesCust1 = new ArrayList<>();
+        List<Invoice> invoicesCust1 = new ArrayList<>();
         invoicesCust1.add(invoiceVM);
 
-        List<InvoiceViewModel> invoicesCust2 = new ArrayList<>();
+        List<Invoice> invoicesCust2 = new ArrayList<>();
         invoicesCust2.add(invoiceVM2);
 
-        List<InvoiceViewModel> invoicesForCust1FromService= invoiceService.getInvoicesByCustomerId(1);
+        List<Invoice> invoicesForCust1FromService = invoiceService.getInvoicesByCustomerId(1);
 
         assertEquals(invoicesCust1, invoicesForCust1FromService);
 
-        List<InvoiceViewModel> invoicesForCust2FromService= invoiceService.getInvoicesByCustomerId(2);
+        List<Invoice> invoicesForCust2FromService= invoiceService.getInvoicesByCustomerId(2);
 
         assertEquals(invoicesCust2, invoicesForCust2FromService);
     }
 
+    // tests default constructor for test coverage
+    // so developers know something went wrong if less than 100%
+    @Test
+    public void createADefaultInventory() {
+
+        Object invoiceObj = new InvoiceService();
+
+        assertEquals(true , invoiceObj instanceof InvoiceService);
+
+    }
+
     // Create mocks
 
-    public void setUpInvoiceMock() {
-        invoiceDao = mock(InvoiceDaoJdbcTemplateImpl.class);
+    public void setUpInvoiceClientMock() {
+
+        List<InvoiceItem> invoiceItems = new ArrayList<>();
+
+        InvoiceItem invoiceItem = new InvoiceItem();
+        invoiceItem.setInvoiceId(0);
+        invoiceItem.setInventoryId(5);
+        invoiceItem.setQuantity(2);
+        invoiceItem.setUnitPrice(new BigDecimal("29.99"));
+
+        invoiceItems.add(invoiceItem);
 
         Invoice invoice = new Invoice();
         invoice.setCustomerId(1);
         invoice.setPurchaseDate(LocalDate.of(2019, 7, 15));
+        invoice.setInvoiceItems(invoiceItems);
+
+        List<InvoiceItem> invoiceItems2 = new ArrayList<>();
+
+        InvoiceItem invoiceItem2 = new InvoiceItem();
+        invoiceItem2.setInvoiceItemId(1);
+        invoiceItem2.setInvoiceId(1);
+        invoiceItem2.setInventoryId(5);
+        invoiceItem2.setQuantity(2);
+        invoiceItem2.setUnitPrice(new BigDecimal("29.99"));
+
+        invoiceItems2.add(invoiceItem2);
 
         Invoice invoice2 = new Invoice();
         invoice2.setInvoiceId(1);
         invoice2.setCustomerId(1);
         invoice2.setPurchaseDate(LocalDate.of(2019, 7, 15));
+        invoice2.setInvoiceItems(invoiceItems2);
+
+        doReturn(invoice2).when(invoiceClient).addInvoice(invoice);
+        doReturn(invoice2).when(invoiceClient).getInvoice(1);
 
         Invoice invoice3 = new Invoice();
         invoice3.setCustomerId(2);
@@ -244,55 +275,26 @@ public class InvoiceServiceTest {
         invoice4.setInvoiceId(2);
         invoice4.setCustomerId(2);
         invoice4.setPurchaseDate(LocalDate.of(2019, 5, 10));
+        invoice4.setInvoiceItems(new ArrayList<>());
+
+        doReturn(invoice4).when(invoiceClient).addInvoice(invoice3);
+        doReturn(invoice4).when(invoiceClient).getInvoice(2);
 
         List<Invoice> invoiceList = new ArrayList<>();
         invoiceList.add(invoice2);
         invoiceList.add(invoice4);
 
         List<Invoice> invoiceListCust1 = new ArrayList<>();
+        invoiceItem.setInvoiceItemId(1);
         invoiceListCust1.add(invoice2);
 
         List<Invoice> invoiceListCust2 = new ArrayList<>();
         invoiceListCust2.add(invoice4);
 
-        doReturn(invoice2).when(invoiceDao).addInvoice(invoice);
-        doReturn(invoice4).when(invoiceDao).addInvoice(invoice3);
+        doReturn(invoiceList).when(invoiceClient).getAllInvoices();
 
-        doReturn(invoice2).when(invoiceDao).getInvoice(1);
-        doReturn(invoice4).when(invoiceDao).getInvoice(2);
-
-        doReturn(invoiceList).when(invoiceDao).getAllInvoices();
-
-        doReturn(invoiceListCust1).when(invoiceDao).getInvoicesByCustomerId(1);
-        doReturn(invoiceListCust2).when(invoiceDao).getInvoicesByCustomerId(2);
-    }
-
-
-    public void setUpInvoiceItemMock() {
-        invoiceItemDao = mock(InvoiceItemDaoJdbcTemplateImpl.class);
-
-        InvoiceItem invoiceItem = new InvoiceItem();
-        invoiceItem.setInvoiceId(1);
-        invoiceItem.setInventoryId(5);
-        invoiceItem.setQuantity(2);
-        invoiceItem.setUnitPrice(new BigDecimal("29.99"));
-
-        InvoiceItem invoiceItem2 = new InvoiceItem();
-        invoiceItem2.setInvoiceItemId(1);
-        invoiceItem2.setInvoiceId(1);
-        invoiceItem2.setInventoryId(5);
-        invoiceItem2.setQuantity(2);
-        invoiceItem2.setUnitPrice(new BigDecimal("29.99"));
-
-        List<InvoiceItem> invoiceItemsOnInvoice1 = new ArrayList<>();
-        invoiceItemsOnInvoice1.add(invoiceItem2);
-
-        doReturn(invoiceItem2).when(invoiceItemDao).addInvoiceItem(invoiceItem);
-
-        doReturn(invoiceItem2).when(invoiceItemDao).getInvoiceItem(1);
-
-        doReturn(invoiceItemsOnInvoice1).when(invoiceItemDao).getInvoiceItemsByInvoiceId(1);
-
+        doReturn(invoiceListCust1).when(invoiceClient).getInvoiceByCustomerId(1);
+        doReturn(invoiceListCust2).when(invoiceClient).getInvoiceByCustomerId(2);
     }
 
 }

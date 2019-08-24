@@ -32,10 +32,10 @@ public class AllExceptionHandler {
 
     // For IDs that don't exist
     @ExceptionHandler(value = {NullPointerException.class})
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseEntity<VndErrors> nullPointerException(NullPointerException e, WebRequest request) {
         VndErrors error = new VndErrors(request.toString(), "Evan says: " + e.getMessage().toLowerCase());
-        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
         return responseEntity;
     }
 

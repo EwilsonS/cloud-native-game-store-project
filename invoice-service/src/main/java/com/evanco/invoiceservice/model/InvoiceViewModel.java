@@ -1,10 +1,12 @@
 package com.evanco.invoiceservice.model;
 
 import javax.validation.Valid;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class InvoiceViewModel extends Invoice {
+public class InvoiceViewModel extends Invoice implements Serializable {
 
     @Valid
     private List<InvoiceItem> invoiceItems;
@@ -16,6 +18,17 @@ public class InvoiceViewModel extends Invoice {
     }
 
     public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
+        this.invoiceItems = invoiceItems;
+    }
+
+    // constructors
+
+    public InvoiceViewModel() {
+
+    }
+
+    public InvoiceViewModel(int invoiceId, Integer customerId, LocalDate purchaseDate, List<InvoiceItem> invoiceItems) {
+        super(invoiceId, customerId, purchaseDate);
         this.invoiceItems = invoiceItems;
     }
 

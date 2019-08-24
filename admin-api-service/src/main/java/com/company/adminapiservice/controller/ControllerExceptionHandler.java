@@ -1,6 +1,7 @@
 package com.company.adminapiservice.controller;
 
 import com.company.adminapiservice.exception.NotFoundException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import feign.FeignException;
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpStatus;
@@ -63,14 +64,45 @@ public class ControllerExceptionHandler {
         return responseEntity;
     }
 
+    // Handles null pointer exceptions
+    @ExceptionHandler(value = {NullPointerException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<VndErrors> nullPointerException(NullPointerException e, WebRequest request) {
+        VndErrors error = new VndErrors(request.toString(), "Null Pointer: " + e.getMessage().toLowerCase());
+        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        return responseEntity;
+    }
+
+    // Handles null pointer exceptions
+    @ExceptionHandler(value = {JsonMappingException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseEntity<VndErrors> JsonMappingException(JsonMappingException e, WebRequest request) {
+        VndErrors error = new VndErrors(request.toString(), "Null Pointer: " + e.getMessage().toLowerCase());
+        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+        return responseEntity;
+    }
+
+    // Handles exceptions returned from Feign that are nested in other exceptions
+    // Ex. validations for objects in a list
+    @ExceptionHandler(value = {feign.codec.EncodeException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<VndErrors> encodeException(feign.codec.EncodeException e, WebRequest request) {
+
+        int begIdx = e.toString().indexOf("Could not write JSON:") + 22;
+        int endIdx = e.toString().indexOf("; ");
+        String msg = e.toString().substring(begIdx, endIdx);
+
+        // displays exception message from remote service
+        VndErrors error = new VndErrors(request.toString(), msg);
+        ResponseEntity<VndErrors> responseEntity = new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        return responseEntity;
+    }
+
     // Handles exceptions returned from Feign
     @ExceptionHandler(value = {FeignException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<VndErrors> feignNotFoundException(FeignException e, WebRequest request) {
 
-        System.out.println(e);
-        System.out.println("------");
-        System.out.println(e.contentUTF8());
         // extracts exception message from remote service
         int begIdx = e.contentUTF8().indexOf("message")+10;
         int endIdx;
@@ -78,7 +110,8 @@ public class ControllerExceptionHandler {
         try {
             endIdx = e.contentUTF8().indexOf("links") - 3;
             msg = e.contentUTF8().substring(begIdx, endIdx);
-        } catch (Exception s) {
+        }
+        catch (Exception s) {
             endIdx = e.contentUTF8().indexOf("path") - 3;
             msg = e.contentUTF8().substring(begIdx, endIdx);
         }

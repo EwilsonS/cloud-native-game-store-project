@@ -13,18 +13,28 @@ public class InvoiceItem {
     private Integer invoiceId;
 
     // wrapper and not primitive int to validate if supplied
-//    @NotNull(message = "BLEHHHHH")
     @Positive
     private Integer inventoryId;
 
     // wrapper and not primitive int to validate if supplied
-//    @NotNull(message = "Please supply a quantity.")
     private Integer quantity;
 
-//    @NotNull
     @DecimalMin(value = "0.0", inclusive = true, message = "The min value you can enter for unit price is {value}.")
     @DecimalMax(value = "99999.99", inclusive = true, message = "The max value you can enter for unit price is {value}")
     private BigDecimal unitPrice;
+
+    // constructors
+
+    public InvoiceItem() {
+    }
+
+    public InvoiceItem(int invoiceItemId, Integer invoiceId, Integer inventoryId, Integer quantity, BigDecimal unitPrice) {
+        this.invoiceItemId = invoiceItemId;
+        this.invoiceId = invoiceId;
+        this.inventoryId = inventoryId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
 
     // getters and setters
 
@@ -87,11 +97,28 @@ public class InvoiceItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceItem that = (InvoiceItem) o;
-        return getInvoiceItemId() == that.getInvoiceItemId() &&
-                Objects.equals(getInvoiceId(), that.getInvoiceId()) &&
-                getInventoryId().equals(that.getInventoryId()) &&
-                getQuantity().equals(that.getQuantity()) &&
-                getUnitPrice().equals(that.getUnitPrice());
+        boolean check = false;
+            if((getInvoiceId() == null && that.getInvoiceId() == null) || getInvoiceId().equals(that.getInvoiceId())) {
+                check = true;
+            }else{
+                return false;
+            }
+            if((getInventoryId() == null && that.getInventoryId() == null) || getInventoryId().equals(that.getInventoryId())){
+                check=true;
+            }else{
+                return false;
+            }
+            if((getQuantity() == null && that.getQuantity() == null) || getQuantity().equals(that.getQuantity())){
+                check = true;
+            }else{
+                return false;
+            }
+            if((getUnitPrice() == null && that.getUnitPrice() == null) ||getUnitPrice().equals(that.getUnitPrice())){
+                check = true;
+            }else{
+                return false;
+            }
+        return check ;
     }
 
     @Override
