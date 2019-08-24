@@ -23,9 +23,9 @@ public interface CustomerClient {
     void updateCustomer(@PathVariable int id, @RequestBody @Valid Customer customer);
 
     @RequestMapping(value = "/customers/{id}", method = RequestMethod.DELETE)
-    public void deleteCustomer(@PathVariable int id);
+    void deleteCustomer(@PathVariable int id);
 
     @RequestMapping(value = "/customers", method = RequestMethod.GET)
-    public List<Customer> getAllCustomers();
+    List<Customer> getAllCustomers();
 
 }

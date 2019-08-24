@@ -22,6 +22,18 @@ public class Invoice {
     @Valid
     private List<InvoiceItem> invoiceItems;
 
+    // constructors
+
+    public Invoice() {
+    }
+
+    public Invoice(int invoiceId, Integer customerId, LocalDate purchaseDate, List<InvoiceItem> invoiceItems) {
+        this.invoiceId = invoiceId;
+        this.customerId = customerId;
+        this.purchaseDate = purchaseDate;
+        this.invoiceItems = invoiceItems;
+    }
+
     // getters and setters
 
     public int getInvoiceId() {
