@@ -1,4 +1,6 @@
-package com.evanco.retailapiservice.model;
+package com.evanco.levelupqueueconsumer.util.messages;
+
+import org.springframework.boot.actuate.integration.IntegrationGraphEndpoint;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -7,7 +9,7 @@ import java.util.Objects;
 
 public class LevelUp {
 
-    private int levelUpId;
+    private Integer levelUpId;
 
     // wrapper and not primitive int to validate if supplied
     @NotNull(message = "Please supply a customer id.")
@@ -26,13 +28,8 @@ public class LevelUp {
     public LevelUp() {
     }
 
-    public LevelUp(int levelUpId, int customerId, int points, LocalDate memberDate) {
+    public LevelUp(Integer levelUpId, @NotNull(message = "Please supply a customer id.") @Positive Integer customerId, @NotNull(message = "Please supply points.") Integer points, @NotNull(message = "Please supply a member date.") LocalDate memberDate) {
         this.levelUpId = levelUpId;
-        this.customerId = customerId;
-        this.points = points;
-        this.memberDate = memberDate;
-    }
-    public LevelUp(int customerId, int points, LocalDate memberDate) {
         this.customerId = customerId;
         this.points = points;
         this.memberDate = memberDate;
@@ -40,11 +37,11 @@ public class LevelUp {
 
     // getters and setters
 
-    public int getLevelUpId() {
+    public Integer getLevelUpId() {
         return levelUpId;
     }
 
-    public void setLevelUpId(int levelUpId) {
+    public void setLevelUpId(Integer levelUpId) {
         this.levelUpId = levelUpId;
     }
 
