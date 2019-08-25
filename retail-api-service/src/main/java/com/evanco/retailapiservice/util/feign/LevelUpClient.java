@@ -1,10 +1,9 @@
 package com.evanco.retailapiservice.util.feign;
 
 import com.evanco.retailapiservice.model.LevelUp;
+import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "level-up-service")
 public interface LevelUpClient {
@@ -13,8 +12,8 @@ public interface LevelUpClient {
     @GetMapping(value = "/levelups/{id}")
     LevelUp getLevelup(@PathVariable("id") int id);
 
-    // get levelup points by customer id
+    // get levelup object by level up id
     @GetMapping(value = "/levelups/customer/{id}")
-    int getLevelUpPointsByCustomerId(@PathVariable("id") int id);
+    LevelUp getLevelUpByCustomerId(@PathVariable("id") int id);
 
 }

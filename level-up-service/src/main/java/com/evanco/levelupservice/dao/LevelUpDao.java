@@ -20,5 +20,5 @@ public interface LevelUpDao {
 
     // additional methods
 
-    Integer getLevelUpPointsByCustomerId(int customerId);
+    LevelUp getLevelUpByCustomerId(int customerId);
 }

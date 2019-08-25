@@ -4,6 +4,7 @@ import com.evanco.retailapiservice.model.*;
 import com.evanco.retailapiservice.service.RetailApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
@@ -26,16 +27,20 @@ public class RetailApiController {
 
     // routes
 
-//    @RequestMapping("/levelups/{id}")
-//    public LevelUp getLevelUp(@PathVariable("id") int id) {
-//        return service.getLevelUpInfo(id);
-//    }
+    // didn't cache b/c result would change frequently as invoice points change
+    // handles requests to get level up points by customer id
+    @RequestMapping(value = "/levelup/customer/{id}", method = RequestMethod.GET)
+    public int getLevelUp(@PathVariable("id") int id) {
+        return service.getPoints(id);
+    }
 
-//    @PostMapping(value = "/invoices")
-//    public InvoiceViewModelResponse addInvoice(@RequestBody InvoiceViewModel ivm) {
-        //return service.addInvoice(ivm);
-//    }
-
+    // adds the return value of the method to the cache using invoice id as the key
+    // handles requests to add an invoice
+    @CachePut(key = "#result.getInvoiceId()")
+    @RequestMapping(value = "/invoices", method = RequestMethod.POST)
+    public InvoiceViewModelResponse addInvoice(@RequestBody InvoiceViewModel ivm) {
+        return service.addInvoice(ivm);
+    }
 
     // caches the result of the method - it automatically uses id as the key
     // handles requests to retrieve an invoice by invoice id
@@ -85,24 +90,5 @@ public class RetailApiController {
     public List<Product> getProductsByInvoiceId(@PathVariable int id) {
         return service.getProductsByInvoiceId(id);
     }
-/*
-
-    @RequestMapping(value = "/invoices", method = RequestMethod.POST)
-
-    @RequestMapping(value = "/invoices/{id}", method = RequestMethod.GET)
-
-    @RequestMapping(value = "/invoices", method = RequestMethod.GET)
-
-    @RequestMapping(value = "/invoices/customer/{id}", method = RequestMethod.GET)
-
-    @RequestMapping(value = "/products/inventory", method = RequestMethod.GET)
-
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
-
-    @RequestMapping(value = "/products/invoice/{id}", method = RequestMethod.GET)
-
-    @RequestMapping(value = "/levelup/customer/{id}", method = RequestMethod.GET)
-
- */
 
 }

@@ -103,11 +103,10 @@ public class LevelUpDaoJdcbTemplateImpl implements LevelUpDao {
     }
 
     @Override
-    public Integer getLevelUpPointsByCustomerId(int customerId) {
+    public LevelUp getLevelUpByCustomerId(int customerId) {
         try {
             LevelUp levelUp = jdbc.queryForObject(SELECT_POINTS_BY_CUSTOMER_ID, this::mapRowToLevelUp, customerId);
-            System.out.println("Level up in dao: " + levelUp);
-            return levelUp.getPoints();
+            return levelUp;
         }
         // database will throw this exception if the customer id does not exist
         catch (EmptyResultDataAccessException e) {

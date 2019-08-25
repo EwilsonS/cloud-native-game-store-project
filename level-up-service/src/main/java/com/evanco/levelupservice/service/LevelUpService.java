@@ -37,8 +37,8 @@ public class LevelUpService {
         return levelUpDao.getAllLevelUps();
     }
 
-    public Integer getLevelUpPointsByCustomerId(int customerId) {
-        return levelUpDao.getLevelUpPointsByCustomerId(customerId);
+    public LevelUp getLevelUpByCustomerId(int customerId) {
+        return levelUpDao.getLevelUpByCustomerId(customerId);
     }
 
 }
