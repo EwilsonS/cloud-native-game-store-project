@@ -22,7 +22,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableFeignClients
 @EnableDiscoveryClient
 @EnableCaching
-@EnableCircuitBreaker
+//@EnableCircuitBreaker
 @SpringBootApplication
 public class RetailApiServiceApplication {
 

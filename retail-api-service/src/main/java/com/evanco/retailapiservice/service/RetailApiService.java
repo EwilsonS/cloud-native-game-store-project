@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -179,17 +180,80 @@ public class RetailApiService {
      * @param customerId int
      * @return LevelUp object
      */
-    @HystrixCommand(fallbackMethod = "reliable")
-    public LevelUp getLevelUpInfo(int customerId) {
-        // use circuit breaker
-        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
-        return this.restTemplate.getForObject(uri, LevelUp.class);
+//    @HystrixCommand(fallbackMethod = "reliable")
+//    public LevelUp getLevelUpInfo(int customerId) {
+//        // use circuit breaker
+//        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
+//        return this.restTemplate.getForObject(uri, LevelUp.class);
+//    }
+//
+//    /**Fallback method for circuit breaker*/
+//    public Integer reliable(int customerId){
+//        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
+//    }
+//
+    // INVOICE GET METHODS
+
+    public InvoiceViewModel getInvoice(int id) {
+        return invoiceClient.getInvoice(id);
     }
 
-    /**Fallback method for circuit breaker*/
-    public Integer reliable(int customerId){
-        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
+    public List<InvoiceViewModel> getAllInvoices() {
+        List<InvoiceViewModel> invoices = invoiceClient.getAllInvoices();
+        return invoiceClient.getAllInvoices();
     }
 
+    public List<InvoiceViewModel> getInvoicesByCustomerId(int id) {
+        return invoiceClient.getInvoicesByCustomerId(id);
+    }
+
+    // PRODUCT GET METHODS
+
+    public Product getProduct(int id) {
+        return productClient.getProduct(id);
+    }
+
+    public List<Product> getProductsInInventory() {
+
+        List<Product> products = new ArrayList<>();
+
+        // get all inventory
+        List<Inventory> inventory = inventoryClient.getAllInventory();
+
+        // loop through inventory list to get product id
+        // use product id to get product to add to product list
+        inventory.forEach(ii ->
+            products.add(productClient.getProduct(ii.getProductId())));
+
+        return products;
+
+    }
+
+    public List<Product> getProductsByInvoiceId(int id) {
+
+        List<Product> products = new ArrayList<>();
+
+        // get invoice by invoice id
+        InvoiceViewModel invoice = invoiceClient.getInvoice(id);
+
+        System.out.println(invoice.getInvoiceItems());
+        System.out.println("");
+
+        // loop through invoice items in invoice to get inventory ids of products
+        invoice.getInvoiceItems().forEach(ii -> {
+
+            // use inventory id to get inventory which has product id
+            Inventory inventory = inventoryClient.getInventory(ii.getInventoryId());
+
+            System.out.println(inventory);
+
+            // use product id to get product to add to product list
+            products.add(productClient.getProduct(inventory.getProductId()));
+
+        });
+
+        return products;
+
+    }
 
 }
