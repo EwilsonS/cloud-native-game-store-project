@@ -159,39 +159,39 @@ public class RetailApiService {
         Use circuit breaker to get existing level up values. If customer exists already in levelup,
         send new level up with levelup id attached. Handle create/update in the queue consumer
         */
-//        if(getLevelUpInfo(ivm.getCustomerId()) == null) {
-//            LevelUp levelUp = new LevelUp(ivmRes.getCustomerId(), pointsToAdd, LocalDate.now());
-//            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
-//            System.out.println("LevelUp sent to queue: " + levelUp);
-//        }else{
-//            LevelUp levelUp = new LevelUp(
-//                    getLevelUpInfo(ivm.getCustomerId()).getLevelUpId(),
-//                    ivmRes.getCustomerId(),
-//                    pointsToAdd,
-//                    LocalDate.now());
-//            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
-//            System.out.println("LevelUp sent to queue: " + levelUp);
-//        }
-//
+        if(getLevelUpInfo(ivm.getCustomerId()) == null) {
+            LevelUp levelUp = new LevelUp(ivmRes.getCustomerId(), pointsToAdd, LocalDate.now());
+            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
+            System.out.println("LevelUp sent to queue: " + levelUp);
+        }else{
+            LevelUp levelUp = new LevelUp(
+                    getLevelUpInfo(ivm.getCustomerId()).getLevelUpId(),
+                    ivmRes.getCustomerId(),
+                    pointsToAdd,
+                    LocalDate.now());
+            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
+            System.out.println("LevelUp sent to queue: " + levelUp);
+        }
+
     }
 
     /**
-//     * Circuit breaker
-//     * @param customerId int
-//     * @return LevelUp object
-//     */
-//    @HystrixCommand(fallbackMethod = "reliable")
-//    public LevelUp getLevelUpInfo(int customerId) {
-//        // use circuit breaker
-//        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
-//        return this.restTemplate.getForObject(uri, LevelUp.class);
-//    }
-//
-//    /**Fallback method for circuit breaker*/
-//    public Integer reliable(int customerId){
-//        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
-//    }
-//
+     * Circuit breaker
+     * @param customerId int
+     * @return LevelUp object
+     */
+    @HystrixCommand(fallbackMethod = "reliable")
+    public LevelUp getLevelUpInfo(int customerId) {
+        // use circuit breaker
+        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
+        return this.restTemplate.getForObject(uri, LevelUp.class);
+    }
+
+    /**Fallback method for circuit breaker*/
+    public Integer reliable(int customerId){
+        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
+    }
+
     // INVOICE GET METHODS
 
     public InvoiceViewModel getInvoice(int id) {

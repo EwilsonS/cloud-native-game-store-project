@@ -135,7 +135,7 @@ public class RetailApiServiceTest {
         InvoiceViewModel invoiceVM1 = service.getInvoice(invoiceVM.getInvoiceId());
 
         assertEquals(invoiceVM, invoiceVM1);
-        
+
     }
 
     // tests getAllInvoices()

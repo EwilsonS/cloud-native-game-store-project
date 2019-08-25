@@ -96,12 +96,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/retail-api-service/src/main/java/com/evanco/retailapiservice/controller/RetailApiController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="180">
-                  <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+                <state relative-caret-position="300">
+                  <caret line="20" selection-start-line="20" selection-end-line="20" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#810#811#0" expanded="true" />
-                    <element signature="e#848#849#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -170,7 +168,7 @@
     <option name="x" value="-9" />
     <option name="y" value="22" />
     <option name="width" value="1938" />
-    <option name="height" value="804" />
+    <option name="height" value="813" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -180,8 +178,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -214,15 +212,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="22" width="1938" height="804" extended-state="0" />
-    <editor active="true" />
+    <frame x="-9" y="22" width="1938" height="813" extended-state="0" />
     <layout>
       <window_info id="Designer" order="0" />
       <window_info id="UI Designer" order="1" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.19303797" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.19462025" />
       <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
       <window_info id="simpleUML" order="7" />
       <window_info anchor="bottom" id="Terminal" order="0" />
@@ -247,6 +244,9 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/design/RetailAPIService UML.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/invoice-service/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -302,12 +302,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/retail-api-service/src/main/java/com/evanco/retailapiservice/controller/RetailApiController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="20" column="14" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+        <state relative-caret-position="300">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#810#811#0" expanded="true" />
-            <element signature="e#848#849#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -339,9 +337,6 @@
           <caret line="42" column="21" selection-start-line="42" selection-start-column="21" selection-end-line="42" selection-end-column="21" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/design/RetailAPIService UML.png">
-      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/admin-api-service/src/main/java/com/company/adminapiservice/controller/ProductController.java">
       <provider selected="true" editor-type-id="text-editor">
