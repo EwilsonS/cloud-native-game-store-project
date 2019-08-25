@@ -4,6 +4,8 @@ import com.evanco.retailapiservice.model.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -16,10 +18,6 @@ public interface ProductClient {
 
     // get product by id
     @GetMapping(value = "/products/{id}")
-    Product getProduct(@PathVariable("id") int id);
-
-    // get products by invoice id
-    @GetMapping(value = "/products/invoice/{id}")
-    List<Product> getProductByInvoice(@PathVariable("id") int id);
+    Product getProduct(@PathVariable int id);
 
 }

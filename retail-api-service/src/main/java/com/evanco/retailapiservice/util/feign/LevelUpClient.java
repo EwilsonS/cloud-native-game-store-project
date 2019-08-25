@@ -17,5 +17,4 @@ public interface LevelUpClient {
     @GetMapping(value = "/levelups/customer/{id}")
     int getLevelUpPointsByCustomerId(@PathVariable("id") int id);
 
-
 }
