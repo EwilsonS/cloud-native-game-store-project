@@ -159,27 +159,27 @@ public class RetailApiService {
         Use circuit breaker to get existing level up values. If customer exists already in levelup,
         send new level up with levelup id attached. Handle create/update in the queue consumer
         */
-        if(getLevelUpInfo(ivm.getCustomerId()) == null) {
-            LevelUp levelUp = new LevelUp(ivmRes.getCustomerId(), pointsToAdd, LocalDate.now());
-            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
-            System.out.println("LevelUp sent to queue: " + levelUp);
-        }else{
-            LevelUp levelUp = new LevelUp(
-                    getLevelUpInfo(ivm.getCustomerId()).getLevelUpId(),
-                    ivmRes.getCustomerId(),
-                    pointsToAdd,
-                    LocalDate.now());
-            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
-            System.out.println("LevelUp sent to queue: " + levelUp);
-        }
-
+//        if(getLevelUpInfo(ivm.getCustomerId()) == null) {
+//            LevelUp levelUp = new LevelUp(ivmRes.getCustomerId(), pointsToAdd, LocalDate.now());
+//            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
+//            System.out.println("LevelUp sent to queue: " + levelUp);
+//        }else{
+//            LevelUp levelUp = new LevelUp(
+//                    getLevelUpInfo(ivm.getCustomerId()).getLevelUpId(),
+//                    ivmRes.getCustomerId(),
+//                    pointsToAdd,
+//                    LocalDate.now());
+//            rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
+//            System.out.println("LevelUp sent to queue: " + levelUp);
+//        }
+//
     }
 
     /**
-     * Circuit breaker
-     * @param customerId int
-     * @return LevelUp object
-     */
+//     * Circuit breaker
+//     * @param customerId int
+//     * @return LevelUp object
+//     */
 //    @HystrixCommand(fallbackMethod = "reliable")
 //    public LevelUp getLevelUpInfo(int customerId) {
 //        // use circuit breaker
@@ -236,16 +236,11 @@ public class RetailApiService {
         // get invoice by invoice id
         InvoiceViewModel invoice = invoiceClient.getInvoice(id);
 
-        System.out.println(invoice.getInvoiceItems());
-        System.out.println("");
-
         // loop through invoice items in invoice to get inventory ids of products
         invoice.getInvoiceItems().forEach(ii -> {
 
             // use inventory id to get inventory which has product id
             Inventory inventory = inventoryClient.getInventory(ii.getInventoryId());
-
-            System.out.println(inventory);
 
             // use product id to get product to add to product list
             products.add(productClient.getProduct(inventory.getProductId()));

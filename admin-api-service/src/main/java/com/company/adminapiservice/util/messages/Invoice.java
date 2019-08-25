@@ -3,11 +3,12 @@ package com.company.adminapiservice.util.messages;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class Invoice {
+public class Invoice implements Serializable {
 
     protected int invoiceId;
 

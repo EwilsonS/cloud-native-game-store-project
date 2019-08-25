@@ -2,9 +2,10 @@ package com.company.adminapiservice.util.messages;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Customer {
+public class Customer implements Serializable {
 
     private int customerId;
 
