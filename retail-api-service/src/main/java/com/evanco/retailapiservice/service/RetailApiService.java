@@ -180,18 +180,18 @@ public class RetailApiService {
      * @param customerId int
      * @return LevelUp object
      */
-//    @HystrixCommand(fallbackMethod = "reliable")
-//    public LevelUp getLevelUpInfo(int customerId) {
-//        // use circuit breaker
-//        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
-//        return this.restTemplate.getForObject(uri, LevelUp.class);
-//    }
-//
-//    /**Fallback method for circuit breaker*/
-//    public Integer reliable(int customerId){
-//        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
-//    }
-//
+    @HystrixCommand(fallbackMethod = "reliable")
+    public LevelUp getLevelUpInfo(int customerId) {
+        // use circuit breaker
+        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
+        return this.restTemplate.getForObject(uri, LevelUp.class);
+    }
+
+    /**Fallback method for circuit breaker*/
+    public Integer reliable(int customerId){
+        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
+    }
+
     // INVOICE GET METHODS
 
     public InvoiceViewModel getInvoice(int id) {
@@ -236,16 +236,11 @@ public class RetailApiService {
         // get invoice by invoice id
         InvoiceViewModel invoice = invoiceClient.getInvoice(id);
 
-        System.out.println(invoice.getInvoiceItems());
-        System.out.println("");
-
         // loop through invoice items in invoice to get inventory ids of products
         invoice.getInvoiceItems().forEach(ii -> {
 
             // use inventory id to get inventory which has product id
             Inventory inventory = inventoryClient.getInventory(ii.getInventoryId());
-
-            System.out.println(inventory);
 
             // use product id to get product to add to product list
             products.add(productClient.getProduct(inventory.getProductId()));
