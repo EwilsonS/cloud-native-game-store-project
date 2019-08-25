@@ -17,7 +17,7 @@ public class MessageListener {
 
         // Let the presence of a valid ID determine create or update
         System.out.println(msg.toString());
-        if(msg.getLevelUpId() != null){
+        if(msg.getLevelUpId() != 0){
             client.updateLevelUp(msg.getLevelUpId(), msg);
             System.out.println("=== Update LevelUp ===");
         }else {

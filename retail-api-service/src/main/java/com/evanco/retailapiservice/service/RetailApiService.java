@@ -1,25 +1,24 @@
 package com.evanco.retailapiservice.service;
 
+import com.evanco.retailapiservice.exception.InsufficientQuantityException;
+import com.evanco.retailapiservice.exception.NotFoundException;
 import com.evanco.retailapiservice.model.*;
 import com.evanco.retailapiservice.util.feign.*;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.ribbon.proxy.annotation.Hystrix;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class RetailApiService {
+
     private static final String EXCHANGE = "levelup-exchange";
     private static final String ROUTING_KEY = "levelup.create.retail.service";
 
@@ -55,6 +54,8 @@ public class RetailApiService {
     // Service Methods
     //---------------------------------------------------
 
+    // SUBMIT INVOICE METHODS
+
     @Transactional
     public InvoiceViewModelResponse addInvoice(InvoiceViewModel ivm) {
         /*
@@ -62,19 +63,36 @@ public class RetailApiService {
            clients. Then, return InvoiceViewModelResponse (imv with levelup points).
         */
 
-        InvoiceViewModelResponse ivmRes = new InvoiceViewModelResponse(); // instantiate response object
+        // throws exception if customer does not exist
+        checkIfCustomer(ivm);
 
-        setIvmResCustomerId(ivm, ivmRes); // Set customerId
+        // throws exception if contains invalid invoice items
+        validateInvoiceItems(ivm);
 
-        ivmRes.setPurchaseDate(ivm.getPurchaseDate()); // set purchase date
+        // populates response with request info
+        InvoiceViewModelResponse ivmRes = new InvoiceViewModelResponse();
+        ivmRes.setCustomerId(ivm.getCustomerId());
+        ivmRes.setInvoiceItems(ivm.getInvoiceItems());
 
-        setInvoiceItems(ivm, ivmRes); // set invoice items after validation
+        // add invoice to db
+        InvoiceViewModel invoiceVM = invoiceClient.addInvoice(ivm);
 
-        ivm = invoiceClient.addInvoice(ivm); // Send ivm to invoice-service via feign after all parts are verified
+        // add invoice id and purchase date to response
+        ivmRes.setInvoiceId(invoiceVM.getInvoiceId());
+        ivmRes.setPurchaseDate(invoiceVM.getPurchaseDate());
 
-        ivmRes.setInvoiceId(ivm.getInvoiceId()); // set invoiceId
+        // add invoice id and invoice item id to invoice items
+        List<InvoiceItem> invoiceItems = ivmRes.getInvoiceItems();
+        for (int i = 0; i < ivmRes.getInvoiceItems().size(); i++) {
+            invoiceItems.get(i).setInvoiceId(invoiceVM.getInvoiceId());
+            invoiceItems.get(i).setInvoiceItemId(invoiceVM.getInvoiceItems().get(i).getInvoiceItemId());
+        }
 
-        setPoints(ivm, ivmRes); // Set levelup info via queue
+        // get points
+        Integer points = calculatePoints(ivm);
+
+        // set points
+        ivmRes.setPoints(points);
 
         return ivmRes;
     }
@@ -92,104 +110,103 @@ public class RetailApiService {
     //---------------------------------------------------
 
     /**
-     * Checks for an existing customer,
-     *
-     * @param ivm    InvoiceViewModel, (users input)
-     * @param ivmRes InvoiceViewModelResponse (eventual output)
+     * Checks for an existing customer
+     * @param ivm InvoiceViewModel
      */
-    private void setIvmResCustomerId(InvoiceViewModel ivm, InvoiceViewModelResponse ivmRes) {
+    private void checkIfCustomer(InvoiceViewModel ivm) {
         if (customerClient.getCustomer(ivm.getCustomerId()) == null) {
             throw new IllegalArgumentException("There is no customer matching the given id");
         }
-        ivmRes.setCustomerId(ivm.getCustomerId());
     }
+
 
     /**
      * Handle invoice item validation
      * @param ivm InvoiceViewModel
-     * @param ivmRes InvoiceViewModelResponse
      */
-    private void setInvoiceItems(InvoiceViewModel ivm, InvoiceViewModelResponse ivmRes) {
-        List<Inventory> inventories = inventoryClient.getAllInventory();
-        for (Inventory inventory : inventories) {
-            if(productClient.getProduct(inventory.getProductId()) == null){
+    private void validateInvoiceItems(InvoiceViewModel ivm) {
+
+        ivm.getInvoiceItems().forEach(ii -> {
+
+            int quantityInStock;
+
+            Inventory inventory = inventoryClient.getInventory(ii.getInventoryId());
+
+            // throw exception if the inventory id does not exist
+            try {
+                // check if quantity greater > 0 and <= items in inventory
+                quantityInStock = inventory.getQuantity();
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Inventory id " + ii.getInventoryId() + " is not valid");
+            }
+
+            // throw exception if quantity requested not available
+            if (ii.getQuantity() > quantityInStock || ii.getQuantity() < 0) {
+                throw new InsufficientQuantityException("We do not have that quantity.");
+            }
+
+            // throw exception if item does not exist
+            if (productClient.getProduct(inventory.getProductId()) == null) {
                 throw new IllegalArgumentException("Product " + inventory.getProductId() + " does not exist");
             }
-            for (InvoiceItem ii : ivm.getInvoiceItems()) {
-                InvoiceItem invoiceItem = new InvoiceItem();
 
-                // check if ii inventory id is valid
-                if (ii.getInventoryId() != inventory.getInventoryId()) {
-                    throw new IllegalArgumentException("Inventory id " + ii.getInventoryId() + " is not valid");
-                }
-                invoiceItem.setInventoryId(ii.getInventoryId());
+        });
 
-                if(inventory.getQuantity() <= 0){
-                    throw new IllegalArgumentException("Product " + inventory.getProductId() + " out of stock");
-                }
-                if(ii.getQuantity() < inventory.getQuantity()){
-                    throw new IllegalArgumentException("Invalid Quantity");
-                }
-                invoiceItem.setQuantity(inventory.getQuantity());
-                invoiceItem.setUnitPrice(ii.getUnitPrice());
-
-            }
-        }
-        ivmRes.setInvoiceItems(ivm.getInvoiceItems());
     }
 
     /**
      * Sends info to queue, gets info from circuit breaker
-     * @param ivm InvoiceViewModel
-     * @param ivmRes InvoiceViewModelResponse
+     * @param ivm
+     * @return
      */
-    private void setPoints(InvoiceViewModel ivm, InvoiceViewModelResponse ivmRes) {
+    private Integer calculatePoints(InvoiceViewModel ivm) {
+
+        // get total purchase value
         BigDecimal invoiceTotal = new BigDecimal("0");
-        for (InvoiceItem ii : ivmRes.getInvoiceItems()) {
+        for (InvoiceItem ii : ivm.getInvoiceItems()) {
             BigDecimal itemTotal = ii.getUnitPrice().multiply(new BigDecimal(ii.getQuantity()));
             invoiceTotal = invoiceTotal.add(itemTotal);
         }
-        int pointsToAdd =
-                invoiceTotal.divide(new BigDecimal("50")
-                        .setScale(0, RoundingMode.FLOOR), RoundingMode.FLOOR)
-                        .intValueExact();
 
-        /*
-        TODO
-        Use circuit breaker to get existing level up values. If customer exists already in levelup,
-        send new level up with levelup id attached. Handle create/update in the queue consumer
-        */
-        if(getLevelUpInfo(ivm.getCustomerId()) == null) {
-            LevelUp levelUp = new LevelUp(ivmRes.getCustomerId(), pointsToAdd, LocalDate.now());
+        // gets points earned
+        Integer pointsEarned =  invoiceTotal.divide(new BigDecimal("50")
+                .setScale(0, BigDecimal.ROUND_FLOOR), BigDecimal.ROUND_FLOOR).intValue();
+
+        // get previous points
+        Integer previousPoints = getPoints(ivm.getCustomerId());
+
+        int totalPoints = previousPoints + pointsEarned;
+
+        // Sent via Queue
+        // if customer not already a member of level up, add them as a member with their earned points
+        if (previousPoints == null) {
+            LevelUp levelUp = new LevelUp(ivm.getCustomerId(), pointsEarned, LocalDate.now());
             rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
-            System.out.println("LevelUp sent to queue: " + levelUp);
-        }else{
+        }
+        // if customer already a member of level up, add points to level up in db
+        else {
             LevelUp levelUp = new LevelUp(
-                    getLevelUpInfo(ivm.getCustomerId()).getLevelUpId(),
-                    ivmRes.getCustomerId(),
-                    pointsToAdd,
+                    levelUpClient.getLevelUpByCustomerId(ivm.getCustomerId()).getLevelUpId(),
+                    ivm.getCustomerId(),
+                    totalPoints,
                     LocalDate.now());
             rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
-            System.out.println("LevelUp sent to queue: " + levelUp);
         }
+
+        return  previousPoints + pointsEarned;
 
     }
 
-    /**
-     * Circuit breaker
-     * @param customerId int
-     * @return LevelUp object
-     */
-    @HystrixCommand(fallbackMethod = "reliable")
-    public LevelUp getLevelUpInfo(int customerId) {
-        // use circuit breaker
-        URI uri = URI.create("http://localhost:7001/levelups/" + customerId);
-        return this.restTemplate.getForObject(uri, LevelUp.class);
+    // LEVEL UP METHODS
+
+    @HystrixCommand(fallbackMethod = "getPointsFallback")
+    public Integer getPoints(int customerId) {
+        return levelUpClient.getLevelUpByCustomerId(customerId).getPoints();
     }
 
     /**Fallback method for circuit breaker*/
-    public Integer reliable(int customerId){
-        return levelUpClient.getLevelUpPointsByCustomerId(customerId);
+    public Integer getPointsFallback(int customerId){
+        throw new NotFoundException("LevelUp could not be retrieved for customer id " + customerId);
     }
 
     // INVOICE GET METHODS

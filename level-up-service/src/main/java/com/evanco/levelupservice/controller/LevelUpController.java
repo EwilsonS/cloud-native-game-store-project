@@ -68,12 +68,12 @@ public class LevelUpController {
     // handles requests to retrieve level up points by customer id
     @RequestMapping(value = "/levelups/customer/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Integer getLevelUpPointsByCustomerId(@PathVariable int id) {
-        Integer levelUpPoints = levelUpService.getLevelUpPointsByCustomerId(id);
-        if (levelUpPoints == null) {
-            throw new NotFoundException("Level up points could not be retrieved for this customer.");
+    public LevelUp getLevelUpByCustomerId(@PathVariable("id") int id) {
+        LevelUp levelUp = levelUpService.getLevelUpByCustomerId(id);
+        if (levelUp == null) {
+            throw new NotFoundException("Level up could not be retrieved for this customer.");
         }
-        return levelUpPoints;
+        return levelUp;
     }
 
 }

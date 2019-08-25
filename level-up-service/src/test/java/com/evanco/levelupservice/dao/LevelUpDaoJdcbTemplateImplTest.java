@@ -126,14 +126,14 @@ public class LevelUpDaoJdcbTemplateImplTest {
         levelUp2.setMemberDate(LocalDate.of(2019,1,26));
         levelUp2 = levelUpDao.addLevelUp(levelUp2);
 
-        int points = levelUpDao.getLevelUpPointsByCustomerId(levelUp2.getCustomerId());
-        assertEquals(120, points);
+        LevelUp levelUpFromDao = levelUpDao.getLevelUpByCustomerId(levelUp2.getCustomerId());
+        assertEquals(levelUp2, levelUpFromDao);
     }
 
     // tests if will throw exception if the customer id does not exist
     @Test
     public void getLevelUpByCustomerWithNonExistentId() {
-        Integer levelUp = levelUpDao.getLevelUpPointsByCustomerId(500);
+        LevelUp levelUp = levelUpDao.getLevelUpByCustomerId(500);
         assertNull(levelUp);
     }
 
@@ -153,7 +153,7 @@ public class LevelUpDaoJdcbTemplateImplTest {
         levelUp2.setMemberDate(LocalDate.of(2019,1,26));
         levelUpDao.addLevelUp(levelUp2);
 
-        Integer levelUpPoints = levelUpDao.getLevelUpPointsByCustomerId(1);
+        LevelUp levelUpFromDao = levelUpDao.getLevelUpByCustomerId(1);
     }
 
 }

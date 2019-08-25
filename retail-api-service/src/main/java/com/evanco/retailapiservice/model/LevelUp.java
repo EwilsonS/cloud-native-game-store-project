@@ -1,5 +1,10 @@
 package com.evanco.retailapiservice.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDate;
@@ -18,6 +23,8 @@ public class LevelUp {
     @NotNull(message = "Please supply points.")
     private Integer points;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull(message = "Please supply a member date.")
     private LocalDate memberDate;
 

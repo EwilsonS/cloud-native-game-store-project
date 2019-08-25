@@ -7,16 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
-
 @FeignClient(name = "level-up-service")
 public interface LevelUpClient {
 
     @PostMapping(value = "/levelups")
-    LevelUp addLevelUp(@RequestBody @Valid LevelUp levelUp);
+    LevelUp addLevelUp(@RequestBody LevelUp levelUp);
 
     @PutMapping(value = "/levelups/{id}")
-    void updateLevelUp(@PathVariable("id") Integer id, @RequestBody LevelUp levelUp);
-
+    void updateLevelUp(@PathVariable("id") int id, @RequestBody LevelUp levelUp);
 
 }

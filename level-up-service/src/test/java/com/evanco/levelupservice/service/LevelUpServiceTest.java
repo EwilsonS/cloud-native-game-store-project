@@ -137,13 +137,13 @@ public class LevelUpServiceTest {
         levelUp2.setPoints(30);
         levelUp2.setMemberDate(LocalDate.of(2019, 2, 15));
 
-        Integer pointsForCust1 = levelUpService.getLevelUpPointsByCustomerId(levelUp.getLevelUpId());
+        LevelUp levelUpForCust1 = levelUpService.getLevelUpByCustomerId(levelUp.getLevelUpId());
 
-        assertEquals(10, (int) pointsForCust1);
+        assertEquals(levelUp, levelUpForCust1);
 
-        Integer pointsForCust2 = levelUpService.getLevelUpPointsByCustomerId(levelUp2.getLevelUpId());
+        LevelUp levelUpForCust2 = levelUpService.getLevelUpByCustomerId(levelUp2.getLevelUpId());
 
-        assertEquals(30, (int) pointsForCust2);
+        assertEquals(levelUp2, levelUpForCust2);
     }
 
     // Create mocks
@@ -179,8 +179,8 @@ public class LevelUpServiceTest {
         doReturn(levelUp2).when(levelUpDao).getLevelUp(1);
         doReturn(levelUp4).when(levelUpDao).getLevelUp(2);
 
-        doReturn(10).when(levelUpDao).getLevelUpPointsByCustomerId(1);
-        doReturn(30).when(levelUpDao).getLevelUpPointsByCustomerId(2);
+        doReturn(levelUp2).when(levelUpDao).getLevelUpByCustomerId(1);
+        doReturn(levelUp4).when(levelUpDao).getLevelUpByCustomerId(2);
 
         List<LevelUp> levelUpList = new ArrayList<>();
         levelUpList.add(levelUp2);

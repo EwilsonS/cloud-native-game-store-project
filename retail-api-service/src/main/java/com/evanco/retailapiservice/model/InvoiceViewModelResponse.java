@@ -3,7 +3,8 @@ package com.evanco.retailapiservice.model;
 import java.util.Objects;
 
 public class InvoiceViewModelResponse extends InvoiceViewModel {
-     int points;
+
+    int points;
 
     public InvoiceViewModelResponse() {
     }
