@@ -7,7 +7,7 @@ import java.util.Objects;
 public class InvoiceViewModel extends Invoice {
 
     @Valid
-    private List<InvoiceItem> invoiceItems;
+    protected List<InvoiceItem> invoiceItems;
 
     // getters and setters
 

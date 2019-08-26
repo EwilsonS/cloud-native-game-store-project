@@ -6,12 +6,16 @@ public class InvoiceViewModelResponse extends InvoiceViewModel {
 
     int points;
 
+    // constructors
+
     public InvoiceViewModelResponse() {
     }
 
     public InvoiceViewModelResponse(int points) {
         this.points = points;
     }
+
+    // getters and setters
 
     public int getPoints() {
         return points;
@@ -20,6 +24,8 @@ public class InvoiceViewModelResponse extends InvoiceViewModel {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    // override methods
 
     @Override
     public boolean equals(Object o) {
@@ -37,7 +43,15 @@ public class InvoiceViewModelResponse extends InvoiceViewModel {
 
     @Override
     public String toString() {
-        return "InvoiceViewModelResponse{" +
+        return "InvoiceViewModel{" +
+                "Invoice{" +
+                "invoiceId=" + invoiceId +
+                ", customerId=" + customerId +
+                ", purchaseDate=" + purchaseDate +
+                '}' +
+                "invoiceItems=" + invoiceItems +
+                '}' +
+                "InvoiceViewModelResponse{" +
                 "points=" + points +
                 '}';
     }

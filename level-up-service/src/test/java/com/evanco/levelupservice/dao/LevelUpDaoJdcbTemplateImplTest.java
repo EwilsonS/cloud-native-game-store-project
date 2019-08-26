@@ -118,7 +118,7 @@ public class LevelUpDaoJdcbTemplateImplTest {
         levelUp.setCustomerId(5);
         levelUp.setPoints(80);
         levelUp.setMemberDate(LocalDate.of(2019,1,26));
-        levelUp = levelUpDao.addLevelUp(levelUp);
+        levelUpDao.addLevelUp(levelUp);
 
         LevelUp levelUp2 = new LevelUp();
         levelUp2.setCustomerId(10);
