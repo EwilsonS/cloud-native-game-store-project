@@ -73,7 +73,7 @@ public class InvoiceDaoJdbcTemplateImplTest {
         invoiceItem.setInventoryId(5);
         invoiceItem.setQuantity(2);
         invoiceItem.setUnitPrice(new BigDecimal("29.99"));
-        invoiceItem = invoiceItemDao.addInvoiceItem(invoiceItem);
+        invoiceItemDao.addInvoiceItem(invoiceItem);
 
         // delete without cascading should result in exception
         invoiceDao.deleteInvoice(invoice.getInvoiceId());

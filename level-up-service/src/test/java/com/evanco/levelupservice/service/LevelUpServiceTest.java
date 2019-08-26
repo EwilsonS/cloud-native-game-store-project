@@ -77,7 +77,6 @@ public class LevelUpServiceTest {
         levelUp.setPoints(30);
         levelUp.setMemberDate(LocalDate.of(2019, 2, 15));
 
-
         levelUpService.addLevelUp(levelUp);
 
         List<LevelUp> fromService = levelUpService.getAllLevelUps();
@@ -105,7 +104,6 @@ public class LevelUpServiceTest {
         levelUp.setCustomerId(1);
         levelUp.setPoints(100);
         levelUp.setMemberDate(LocalDate.of(2019, 1, 20));
-
 
         levelUpService.updateLevelUp(levelUp);
         ArgumentCaptor<LevelUp> postCaptor = ArgumentCaptor.forClass(LevelUp.class);

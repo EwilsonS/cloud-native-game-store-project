@@ -61,9 +61,6 @@ public class InvoiceServiceTest {
 
         InvoiceViewModel invoiceVM1 = invoiceService.getInvoice(invoiceVM.getInvoiceId());
 
-        System.out.println("invoice: " + invoiceVM);
-        System.out.println("invoice from service: " + invoiceVM1);
-
         assertEquals(invoiceVM, invoiceVM1);
     }
 

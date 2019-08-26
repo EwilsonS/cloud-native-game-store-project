@@ -113,32 +113,28 @@ public class RetailApiService {
      * Checks for an existing customer
      * @param ivm InvoiceViewModel
      */
-    private void checkIfCustomer(InvoiceViewModel ivm) {
+    public void checkIfCustomer(InvoiceViewModel ivm) {
         if (customerClient.getCustomer(ivm.getCustomerId()) == null) {
             throw new IllegalArgumentException("There is no customer matching the given id");
         }
     }
 
-
     /**
      * Handle invoice item validation
      * @param ivm InvoiceViewModel
      */
-    private void validateInvoiceItems(InvoiceViewModel ivm) {
+    public void validateInvoiceItems(InvoiceViewModel ivm) {
 
         ivm.getInvoiceItems().forEach(ii -> {
-
-            int quantityInStock;
 
             Inventory inventory = inventoryClient.getInventory(ii.getInventoryId());
 
             // throw exception if the inventory id does not exist
-            try {
-                // check if quantity greater > 0 and <= items in inventory
-                quantityInStock = inventory.getQuantity();
-            } catch (Exception e) {
+            if (inventory == null) {
                 throw new IllegalArgumentException("Inventory id " + ii.getInventoryId() + " is not valid");
             }
+
+            int quantityInStock = inventory.getQuantity();
 
             // throw exception if quantity requested not available
             if (ii.getQuantity() > quantityInStock || ii.getQuantity() < 0) {
@@ -159,7 +155,7 @@ public class RetailApiService {
      * @param ivm
      * @return
      */
-    private Integer calculatePoints(InvoiceViewModel ivm) {
+    public Integer calculatePoints(InvoiceViewModel ivm) {
 
         // get total purchase value
         BigDecimal invoiceTotal = new BigDecimal("0");
@@ -175,7 +171,11 @@ public class RetailApiService {
         // get previous points
         Integer previousPoints = getPoints(ivm.getCustomerId());
 
-        int totalPoints = previousPoints + pointsEarned;
+        int totalPoints = pointsEarned;
+
+        if (previousPoints != null) {
+            totalPoints += previousPoints;
+        }
 
         // Sent via Queue
         // if customer not already a member of level up, add them as a member with their earned points
@@ -193,7 +193,7 @@ public class RetailApiService {
             rabbitTemplate.convertAndSend(EXCHANGE, ROUTING_KEY, levelUp);
         }
 
-        return  previousPoints + pointsEarned;
+        return  totalPoints;
 
     }
 
@@ -201,7 +201,11 @@ public class RetailApiService {
 
     @HystrixCommand(fallbackMethod = "getPointsFallback")
     public Integer getPoints(int customerId) {
-        return levelUpClient.getLevelUpByCustomerId(customerId).getPoints();
+        if (levelUpClient.getLevelUpByCustomerId(customerId) == null) {
+            return null;
+        } else {
+            return levelUpClient.getLevelUpByCustomerId(customerId).getPoints();
+        }
     }
 
     /**Fallback method for circuit breaker*/
